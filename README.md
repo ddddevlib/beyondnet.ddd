@@ -1,5 +1,8 @@
 # BeyondNet.Ddd
+
 This library tries to be a reference for developers in effectively applying Domain-Driven Design (DDD) principles within C# and .NET Core projects. Domain-driven design is a powerful approach that aligns software design with the complexities of the business domain, promoting clarity, maintainability, and agility in application development. Here’s an overview of your library's key objectives and offerings:
+
+If you want to see a sample using this library, please check this repository: https://github.com/beyondnetPeru/myplanner.projects
 
 1. Foundational Concepts: You provide comprehensive coverage of foundational DDD concepts such as entities, value objects, aggregates, repositories, and domain services. These concepts are essential for structuring domain logic and encapsulating business rules effectively.
 
