@@ -1,13 +1,6 @@
-﻿using BeyondNet.Ddd.Extensions;
-using BeyondNet.Ddd.Test.Stubs;
+﻿using BeyondNet.Ddd.Test.Stubs;
 using BeyondNet.Ddd.ValueObjects;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BeyondNet.Ddd.Test.Extensions
 {
@@ -17,7 +10,7 @@ namespace BeyondNet.Ddd.Test.Extensions
         [TestMethod]
         public void GetPropertiesBrokenRules_ShouldReturnEmptyList_WhenNoBrokenRulesExist()
         {
-            var entity = ParentRootEntity.Create(StringValueObject.Create("foo"), FieldName.Create("foo"));
+            var entity = ParentRootEntity.Create(Name.Create("foo"), Description.Create("foo"));
 
             entity.GetBrokenRules().Any().ShouldBeFalse();
         }
@@ -25,7 +18,7 @@ namespace BeyondNet.Ddd.Test.Extensions
         [TestMethod]
         public void GetPropertiesBrokenRules_ShouldReturnBrokenRules_WhenBrokenRulesExist()
         {
-            var entity = ParentRootEntity.Create(StringValueObject.Create("foo"), FieldName.Create(""));
+            var entity = ParentRootEntity.Create(Name.Create("foo"), Description.Create(""));
 
             entity.GetBrokenRules().Any().ShouldBeTrue();
         }

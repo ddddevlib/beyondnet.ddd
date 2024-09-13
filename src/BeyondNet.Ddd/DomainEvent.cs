@@ -2,7 +2,7 @@
 
 namespace BeyondNet.Ddd
 {
-    public abstract class DomainEvent : INotification
+    public abstract record DomainEvent : INotification
     {
         public string EventId { get; private set; }
         public DateTime CreatedAt { get; private set; }

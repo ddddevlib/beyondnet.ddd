@@ -43,7 +43,13 @@ namespace BeyondNet.Ddd
 
         public int Version { get; private set; }
 
-        public bool IsValid => !_brokenRules.GetBrokenRules().Any();
+        public bool IsValid()
+        {
+            Validate();
+
+            return !_brokenRules.GetBrokenRules().Any();
+        }
+
 
         public bool IsNew => Tracking.IsNew;
 

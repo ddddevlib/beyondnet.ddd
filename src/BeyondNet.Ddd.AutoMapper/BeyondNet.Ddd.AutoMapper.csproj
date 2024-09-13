@@ -5,17 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>BeyondNet.Ddd</Title>
-    <Authors>$(AssemblyName)</Authors>
-    <Description>A simple library to implement Domain-Driven Design with .NET and C#</Description>
+    <Title>BeyondNet.Ddd.AutoMapper</Title>
+    <Description>Extension for Automapper, supporting BeyondNet.Ddd</Description>
     <Copyright>BeyondNet</Copyright>
+    <PackageProjectUrl>https://github.com/ddddevlib/beyondnet.ddd</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ddddevlib/beyondnet.ddd</RepositoryUrl>
-    <PackageTags>Ddd</PackageTags>
+    <PackageTags>Ddd, AutoMapper</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
-    <AnalysisLevel>5.0-all</AnalysisLevel>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE">
@@ -29,7 +32,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.3.0" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BeyondNet.Ddd\BeyondNet.Ddd.csproj" />
   </ItemGroup>
 
 </Project>

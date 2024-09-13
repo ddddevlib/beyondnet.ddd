@@ -10,8 +10,8 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void MarkNew_ShouldSetIsNewToTrue_AndIsDirtyToFalse()
         {
-            var name = StringValueObject.Create("foo");
-            var fieldName = FieldName.Create("foo");
+            var name = Name.Create("foo");
+            var fieldName = Description.Create("foo");
 
             var subject = ParentRootEntity.Create(name, fieldName);
 
@@ -22,14 +22,14 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void MarkNew_ShouldSetIsNewTofalse_AndIsDirtyToTrue()
         {
-            var name = StringValueObject.Create("foo");
-            var fieldName = FieldName.Create("foo");
+            var name = Name.Create("foo");
+            var fieldName = Description.Create("foo");
 
             var subject = ParentRootEntity.Create(name, fieldName);
 
             var props = subject.GetProps();
             
-            props.FieldName!.SetValue("bar");
+            props.Name!.SetValue("bar");
 
             subject.SetProps(props);
 
