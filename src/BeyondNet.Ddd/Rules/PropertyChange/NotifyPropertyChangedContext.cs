@@ -5,9 +5,9 @@
         internal object Value { get; set; }
         internal Type Type { get; }
 
-        internal event NotifyPropertyChangedHandler PropertyChangedCallback;
+        internal event NotifyPropertyChangedHandler? PropertyChangedCallback;
 
-        internal NotifyPropertyChangedContext(object defaultValue, Type type, NotifyPropertyChangedHandler notifyPropertyChangedHandler)
+        internal NotifyPropertyChangedContext(object defaultValue, Type type, NotifyPropertyChangedHandler? notifyPropertyChangedHandler)
         {
             Value = defaultValue;
             Type = type;

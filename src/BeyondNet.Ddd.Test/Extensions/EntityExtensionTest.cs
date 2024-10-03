@@ -7,20 +7,50 @@ namespace BeyondNet.Ddd.Test.Extensions
     [TestClass]
     public class EntityExtensionTest
     {
+        ParentRootEntity? parentEntityWithoutRules = null;
+
+        ParentRootEntity? parentEntityWithRules = null;
+
+
+        [TestInitialize]
+        public void Setup()
+        {
+            parentEntityWithoutRules = ParentRootEntity.Create(Name.Create("foo"), Description.Create("foo"));
+
+            parentEntityWithRules = ParentRootEntity.Create(Name.Create("foo"), Description.Create(""));
+        }
+
+
         [TestMethod]
         public void GetPropertiesBrokenRules_ShouldReturnEmptyList_WhenNoBrokenRulesExist()
         {
-            var entity = ParentRootEntity.Create(Name.Create("foo"), Description.Create("foo"));
-
-            entity.GetBrokenRules().Any().ShouldBeFalse();
+            parentEntityWithoutRules!.GetBrokenRules().ShouldBeEmpty();
         }
 
         [TestMethod]
         public void GetPropertiesBrokenRules_ShouldReturnBrokenRules_WhenBrokenRulesExist()
         {
-            var entity = ParentRootEntity.Create(Name.Create("foo"), Description.Create(""));
+            parentEntityWithRules!.GetBrokenRules().ShouldNotBeEmpty();
+        }
 
-            entity.GetBrokenRules().Any().ShouldBeTrue();
+        [TestMethod]
+        public void GetPropertiesBrokenRules_ShouldReturnEmptyList_WhenNoBrokenRulesExistInValueObject()
+        {
+
+            parentEntityWithoutRules!.GetBrokenRules().ShouldBeEmpty();
+        }
+
+        [TestMethod]
+        public void GetPropertiesBrokenRules_ShouldReturnBrokenRules_WhenBrokenRulesExistInValueObjectAndEntity()
+        {
+            parentEntityWithRules!.GetBrokenRules().ShouldNotBeEmpty();
+        }
+
+        [TestCleanup]
+        public void Clean()
+        {
+            parentEntityWithRules = null;
+            parentEntityWithoutRules = null;
         }
     }
 

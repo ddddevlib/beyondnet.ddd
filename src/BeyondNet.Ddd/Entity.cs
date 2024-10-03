@@ -1,16 +1,15 @@
 ﻿using MediatR;
 using BeyondNet.Ddd.Rules;
 using BeyondNet.Ddd.Interfaces;
-using System.Collections.ObjectModel;
 using BeyondNet.Ddd.Extensions;
 using BeyondNet.Ddd.Rules.Impl;
 using BeyondNet.Ddd.Impl;
 
 namespace BeyondNet.Ddd
 {
-    
 
-    public abstract class Entity<TEntity, TProps> 
+
+    public abstract class Entity<TEntity, TProps>
             where TEntity : Entity<TEntity, TProps>
             where TProps : class, IProps
     {
@@ -75,7 +74,6 @@ namespace BeyondNet.Ddd
         }
 
         #endregion
-
 
         #region Methods
         public TProps GetPropsCopy()
