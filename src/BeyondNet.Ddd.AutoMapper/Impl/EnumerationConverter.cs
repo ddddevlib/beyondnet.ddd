@@ -6,7 +6,7 @@ namespace BeyondNet.Ddd.AutoMapper.Impl
     {
         public TEnum Convert(int source, TEnum destination, ResolutionContext context)
         {
-            return Enumeration.FromValue<TEnum>(source);
+            return Enumeration.FromValue<TEnum>(source)!;
         }
     }
 }

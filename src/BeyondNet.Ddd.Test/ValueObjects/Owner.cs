@@ -2,7 +2,7 @@
 
 namespace BeyondNet.Ddd.ValueObjects
 {
-    public class Owner : StringRequiredValueObject
+    public class Owner : StringValueObject
     {
         protected Owner(string value) : base(value)
         {

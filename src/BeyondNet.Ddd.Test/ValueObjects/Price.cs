@@ -18,13 +18,13 @@ namespace BeyondNet.Ddd.valueObjects
             return new Price(new PriceProps { Symbol = symbol, Amount = amount });
         }
 
-        public Symbol Symbol => Value.Symbol;
-        public double Amount => Value.Amount;
+        public Symbol Symbol => GetValue().Symbol;
+        public double Amount => GetValue().Amount;
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Value.Symbol;
-            yield return Value.Amount;
+            yield return GetValue().Symbol;
+            yield return GetValue().Amount;
         }
 
     }

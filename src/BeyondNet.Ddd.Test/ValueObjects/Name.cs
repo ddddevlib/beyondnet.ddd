@@ -1,11 +1,12 @@
 ﻿using BeyondNet.Ddd;
 using BeyondNet.Ddd.Rules;
 using BeyondNet.Ddd.Rules.Impl;
+using BeyondNet.Ddd.Test.ValueObjects.Validators;
 using BeyondNet.Ddd.ValueObjects;
 
 namespace BeyondNet.Ddd.ValueObjects
 {
-    public class Name : StringRequiredValueObject
+    public class Name : StringValueObject
     {
         protected Name(string value) : base(value)
         {
@@ -17,6 +18,7 @@ namespace BeyondNet.Ddd.ValueObjects
             base.AddValidators();
 
             AddValidator(new NameValidator(this));
+            AddValidator(new StringRequiredValidator(this));
         }
 
         public static Name Create(string value)

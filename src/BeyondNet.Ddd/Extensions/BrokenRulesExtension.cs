@@ -4,7 +4,7 @@ using BeyondNet.Ddd.Rules;
 
 namespace BeyondNet.Ddd.Extensions
 {
-    public static class EntityExtension
+    public static class BrokenRulesExtension
     {
         private const string BrokenRulesKeyFunctionName = "GetBrokenRules";
 

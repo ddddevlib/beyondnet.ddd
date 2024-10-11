@@ -35,7 +35,6 @@ namespace BeyondNet.Ddd
             {
                 return (TValue)GetValue();
             }
-            //private set => SetValue(value!);
         }
 
         #endregion
@@ -54,7 +53,9 @@ namespace BeyondNet.Ddd
 
             Tracking = Tracking.MarkNew();
 
+#pragma warning disable CA2214 // Do not call overridable methods in constructors
             AddValidators();
+#pragma warning restore CA2214 // Do not call overridable methods in constructors
 
             Validate();
 
@@ -66,9 +67,9 @@ namespace BeyondNet.Ddd
 
         private void ValuePropertyChanged(AbstractNotifyPropertyChanged sender, NotifyPropertyChangedContextArgs e)
         {
-           Tracking = Tracking.MarkDirty();
+            Tracking = Tracking.MarkDirty();
 
-           Validate();
+            Validate();
         }
 
         public void SetValue(TValue value)
@@ -87,6 +88,9 @@ namespace BeyondNet.Ddd
 
         #region Business Rules
 
+        /// <summary>
+        /// Adds the validators for the value object.
+        /// </summary>
         public virtual void AddValidators()
         {
 
@@ -145,7 +149,7 @@ namespace BeyondNet.Ddd
         /// </summary>
         /// <param name="obj">The value object to compare with the current value object.</param>
         /// <returns><c>true</c> if the current value object is equal to the other value object; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || obj.GetType() != GetType())
             {

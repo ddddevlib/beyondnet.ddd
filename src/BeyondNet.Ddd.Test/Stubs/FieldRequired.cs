@@ -2,7 +2,7 @@
 
 namespace BeyondNet.Ddd.Test.Stubs
 {
-    public class FieldRequired : StringRequiredValueObject
+    public class FieldRequired : StringValueObject
     {
         public FieldRequired(string value) : base(value)
         {
@@ -15,7 +15,7 @@ namespace BeyondNet.Ddd.Test.Stubs
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Value;
+            yield return GetValue();
         }
     }
 }
