@@ -1,8 +1,6 @@
-﻿using BeyondNet.Ddd;
-using BeyondNet.Ddd.Rules;
+﻿using BeyondNet.Ddd.Rules;
 using BeyondNet.Ddd.Rules.Impl;
 using BeyondNet.Ddd.Test.ValueObjects.Validators;
-using BeyondNet.Ddd.ValueObjects;
 
 namespace BeyondNet.Ddd.ValueObjects
 {

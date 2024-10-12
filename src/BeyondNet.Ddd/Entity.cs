@@ -3,6 +3,7 @@ using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.Extensions;
 using BeyondNet.Ddd.Rules.Impl;
 using BeyondNet.Ddd.Impl;
+using System.Text;
 
 namespace BeyondNet.Ddd
 {
@@ -236,6 +237,19 @@ namespace BeyondNet.Ddd
         public ReadOnlyCollection<BrokenRule> GetBrokenRules()
         {
             return _brokenRules.GetBrokenRules();
+        }
+
+        public string GetBrokenRulesAsString()
+        {
+            var sb = new StringBuilder();
+            
+            foreach (var rule in _brokenRules.GetBrokenRules()) {
+                var line = $"Property: {rule.Property}, Message: {rule.Message}";
+
+                sb.Append(line);
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>

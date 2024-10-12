@@ -13,7 +13,7 @@ namespace BeyondNet.Ddd.Test.ValueObjects.Validators
         {
             if (String.IsNullOrWhiteSpace(Subject!.GetValue()))
             {
-                AddBrokenRule("Value", "Value is required");
+                AddBrokenRule($"Property: {nameof(Subject)} Validator: {nameof(StringRequiredValidator)}", "Message: Value is required. It cannot be null, empty or white space");
             }
         }
     }
