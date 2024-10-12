@@ -91,12 +91,6 @@ namespace BeyondNet.Ddd.Test
         }
 
         [TestMethod]
-        public void Parse_ShouldThrowException()
-        {
-            Assert.ThrowsException<InvalidOperationException>(() => Enumeration.FromValue<MockEnumeration>(3));
-        }
-
-        [TestMethod]
         public void Parse_ShouldThrowExceptionWithCorrectMessage()
         {
             try

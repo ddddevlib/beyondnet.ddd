@@ -39,8 +39,8 @@
         {
             this.SetValue(new AuditProps
             {
-                CreatedBy = this.Value.CreatedBy,
-                CreatedAt = this.Value.CreatedAt,
+                CreatedBy = this.GetValue().CreatedBy,
+                CreatedAt = this.GetValue().CreatedAt,
                 UpdatedBy = updatedBy,
                 UpdatedAt = DateTime.Today.ToUniversalTime(),
                 TimeSpan = TimeSpan.FromTicks(DateTime.Today.Ticks).ToString(),
@@ -50,11 +50,11 @@
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Value.CreatedBy;
-            yield return Value.CreatedAt;
-            yield return Value.UpdatedBy!;
-            yield return Value.UpdatedAt!;
-            yield return Value.TimeSpan;
+            yield return GetValue().CreatedBy;
+            yield return GetValue().CreatedAt;
+            yield return GetValue().UpdatedBy!;
+            yield return GetValue().UpdatedAt!;
+            yield return GetValue().TimeSpan;
         }
     }
 }

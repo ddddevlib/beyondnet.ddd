@@ -57,10 +57,12 @@ namespace BeyondNet.Ddd.Rules
         public override string ToString()
         {
             var sb = new StringBuilder();
+
             foreach (var brokenRule in _brokenRules)
             {
                 sb.AppendLine(brokenRule.Message);
             }
+
             return sb.ToString();
         }
     }

@@ -31,18 +31,6 @@ namespace BeyondNet.Ddd.Test
         }
 
         [TestMethod]
-        public void MapperFromBOEntityToDtoShouldBeOk()
-        {
-            var parentRoot = ParentRootEntity.Create(
-                    Name.Create("foo"),
-                    Description.Create("foo"));
-
-            var dto = mapper.Map<ParentRootDto>(parentRoot.GetPropsCopy());
-
-            dto.ShouldNotBeNull();
-        }
-
-        [TestMethod]
         public void MapperFromDtoToBOEntityShouldBeOk()
         {
             var dto = new ParentRootDto
@@ -50,6 +38,7 @@ namespace BeyondNet.Ddd.Test
                 Id = "1",
                 Name = "foo",
                 Description = "foo",
+                ComplexityLevel = 1,
                 Status = 2                
             };
 
@@ -67,6 +56,23 @@ namespace BeyondNet.Ddd.Test
             var entity = ParentRootEntity.Create(entityProps.Name, entityProps.Description);
 
             entity.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        public void MapperFromDtoToCommandShouldBeOk()
+        {
+            var dto = new ParentRootDto
+            {
+                Id = "1",
+                Name = "foo",
+                Description = "foo",
+                ComplexityLevel = 1,
+                Status = 2
+            };
+
+            var command = mapper.Map<ParentRootCommmand>(dto);
+
+            command.ShouldNotBeNull();
         }
 
         [TestCleanup]

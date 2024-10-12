@@ -6,27 +6,7 @@ namespace BeyondNet.Ddd.Test
 {
     [TestClass]
     public class ValueObjectTest
-    {
-        [TestMethod]
-        public void Should_IsDirty_Be_False()
-        {
-            var fieldName = Description.Create("foo");
-
-            Assert.IsTrue(fieldName.Tracking.IsNew);
-            Assert.IsFalse(fieldName.Tracking.IsDirty);
-        }
-
-        [TestMethod]
-        public void Should_IsDirty_Be_True()
-        {
-            var fieldName = Description.Create("foo");
-
-            fieldName.SetValue("demo");
-
-            Assert.IsTrue(fieldName.Tracking.IsDirty);
-            Assert.IsFalse(fieldName.Tracking.IsNew);
-        }
-
+    {   
 
         [TestMethod]
         public void Should_Implement_ValueObject()

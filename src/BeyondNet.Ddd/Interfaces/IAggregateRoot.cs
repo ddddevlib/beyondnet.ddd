@@ -1,7 +1,9 @@
-﻿using MediatR;
-
-namespace BeyondNet.Ddd.Interfaces
+﻿namespace BeyondNet.Ddd.Interfaces
 {
-    public interface IAggregateRoot {
+    /// <summary>
+    /// Represents an aggregate root in the domain.
+    /// </summary>
+    public interface IAggregateRoot
+    {
     }
 }

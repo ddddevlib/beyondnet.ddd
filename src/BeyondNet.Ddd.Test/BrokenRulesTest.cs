@@ -1,4 +1,7 @@
 ﻿using BeyondNet.Ddd.Rules;
+using BeyondNet.Ddd.Test.Stubs;
+using BeyondNet.Ddd.ValueObjects;
+using Shouldly;
 
 namespace BeyondNet.Ddd.Test
 {
@@ -106,6 +109,19 @@ namespace BeyondNet.Ddd.Test
 
             // Assert
             Assert.AreEqual("Message1\r\nMessage2\r\n", result);
+        }
+
+        [TestMethod]
+        public void GetBrokenRules_ReturnsReadOnlyCollection()
+        {
+            // Arrange
+            var obj = ParentRootEntity.Create(Name.Create(""), Description.Create("foo"));
+
+            // Act
+            var result = obj.GetBrokenRulesAsString();
+
+            // Assert
+            result!.Length.ShouldBeGreaterThan(0);
         }
     }
 }

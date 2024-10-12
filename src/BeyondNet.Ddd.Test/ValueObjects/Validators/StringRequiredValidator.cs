@@ -1,7 +1,7 @@
 ﻿using BeyondNet.Ddd.Rules;
 using BeyondNet.Ddd.Rules.Impl;
 
-namespace BeyondNet.Ddd.ValueObjects.Validators
+namespace BeyondNet.Ddd.Test.ValueObjects.Validators
 {
     public class StringRequiredValidator : AbstractRuleValidator<ValueObject<string>>
     {
@@ -10,10 +10,10 @@ namespace BeyondNet.Ddd.ValueObjects.Validators
         }
 
         public override void AddRules(RuleContext context)
-        {           
-            if (string.IsNullOrEmpty(Subject!.GetValue()!.ToString()))
+        {
+            if (String.IsNullOrWhiteSpace(Subject!.GetValue()))
             {
-                AddBrokenRule("Value", "Value cannot be null or empty");
+                AddBrokenRule($"Property: {nameof(Subject)} Validator: {nameof(StringRequiredValidator)}", "Message: Value is required. It cannot be null, empty or white space");
             }
         }
     }

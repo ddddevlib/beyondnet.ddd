@@ -15,8 +15,8 @@ namespace BeyondNet.Ddd.Test
 
             var subject = ParentRootEntity.Create(name, fieldName);
 
-            subject.Tracking.IsNew.ShouldBeTrue();
-            subject.Tracking.IsDirty.ShouldBeFalse();
+            subject.IsNew.ShouldBeTrue();
+            subject.IsDirty.ShouldBeFalse();
         }
 
         [TestMethod]
@@ -27,15 +27,14 @@ namespace BeyondNet.Ddd.Test
 
             var subject = ParentRootEntity.Create(name, fieldName);
 
-            var props = subject.GetProps();
+            var props = subject.Props;
             
             props.Name!.SetValue("bar");
 
             subject.SetProps(props);
 
-            subject.Tracking.IsNew.ShouldBeFalse();
-            subject.Tracking.IsDirty.ShouldBeTrue();
-
+            subject.IsNew.ShouldBeFalse();
+            subject.IsDirty.ShouldBeTrue();
         }
     }
 }

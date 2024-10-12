@@ -32,11 +32,11 @@ namespace BeyondNet.Ddd.valueObjects
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Value.Direction;
-            yield return Value.City;
-            yield return Value.Country;
-            yield return Value.State;
-            yield return Value.ZipCode;
+            yield return GetValue().Direction;
+            yield return GetValue().City;
+            yield return GetValue().Country;
+            yield return GetValue().State;
+            yield return GetValue().ZipCode;
         }
     }
 }

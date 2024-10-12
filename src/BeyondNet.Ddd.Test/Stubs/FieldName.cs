@@ -1,8 +1,8 @@
 ﻿using BeyondNet.Ddd.ValueObjects;
 
-namespace BeyondNet.Ddd.Test.Stubs
-{
-    public class FieldName : StringRequiredValueObject
+namespace  BeyondNet.Ddd.Test.Stubs
+{ 
+    public class FieldName : StringValueObject
     {
         private FieldName(string value) : base(value)
         {
@@ -16,7 +16,7 @@ namespace BeyondNet.Ddd.Test.Stubs
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Value;
+            yield return GetValue();
         }
     }
 }

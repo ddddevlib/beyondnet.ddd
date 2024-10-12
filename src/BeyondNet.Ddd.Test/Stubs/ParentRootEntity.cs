@@ -1,6 +1,5 @@
 ﻿using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.ValueObjects;
-using BeyondNet.Ddd.ValueObjects;
 
 namespace BeyondNet.Ddd.Test.Stubs
 {
@@ -9,7 +8,8 @@ namespace BeyondNet.Ddd.Test.Stubs
         public IdValueObject Id { get; private set; }
         public Name Name { get; private set; }
         public Description Description { get; private set; }
-        public ParentRootEntityStatus Status { get; private set; }
+        public ComplexityLevelEnum ComplexityLevel { get; private set; }
+        public ParentRootEntityStatus Status { get; set; }
         public Audit Audit { get; private set; }
 
 
@@ -19,6 +19,7 @@ namespace BeyondNet.Ddd.Test.Stubs
             Name = name;
             Description = description;
             Status = ParentRootEntityStatus.Active;
+            ComplexityLevel = ComplexityLevelEnum.Low;
             Audit = Audit.Create("default");
         }
 
@@ -41,19 +42,16 @@ namespace BeyondNet.Ddd.Test.Stubs
             return new ParentRootEntity(props);
         }
 
-        public void ChangeName(Name name)
+        public void CgangeName(Name name)
         {
-            GetProps().Name.SetValue(name.GetValue());
-            var x = GetBrokenRules();
-
-            GetProps().Audit.Update("default");
+            Props.Name.SetValue(name.GetValue());
+            Props.Audit.Update("default");
         }
 
         public void ChangeDescription(Description description)
         {
-            GetProps().Description.SetValue(description.GetValue());
-
-            GetProps().Audit.Update("default");
+            Props.Description.SetValue( description.GetValue());
+            Props.Audit.Update("default");
         }
 
         public void Inactivate()
@@ -64,8 +62,8 @@ namespace BeyondNet.Ddd.Test.Stubs
                 return;
             }
 
-            GetProps().Status.SetValue<ParentRootEntityStatus>(ParentRootEntityStatus.Inactive.Id);
-            GetProps().Audit.Update("default");
+            Props.Status = ParentRootEntityStatus.Inactive;
+            Props.Audit.Update("default");
         }
 
         public void Activate()
@@ -76,8 +74,8 @@ namespace BeyondNet.Ddd.Test.Stubs
                 return;
             }
 
-            GetProps().Status.SetValue<ParentRootEntityStatus>(ParentRootEntityStatus.Active.Id);
-            GetProps().Audit.Update("default");
+            Props.Status = ParentRootEntityStatus.Active;
+            Props.Audit.Update("default");
         }
     }
 

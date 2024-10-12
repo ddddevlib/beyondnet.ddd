@@ -32,7 +32,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Have_Empty_DomainEvents_Collection()
         {
-            Assert.AreEqual(0, owner.DomainEvents.Count);
+            Assert.AreEqual(0, owner.GetDomainEvents().Count);
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.AddBrokenRule("FieldName", "Field Name is required");
 
-            Assert.AreEqual(1, owner._brokenRules.GetBrokenRules().Count);
+            Assert.AreEqual(1, owner.GetBrokenRules().Count);
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.AddDomainEvent(new StubMockDomainEvent());
 
-            Assert.AreEqual(1, owner.DomainEvents.Count);
+            Assert.AreEqual(1, owner.GetDomainEvents().Count);
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.RemoveDomainEvent(domainEvent);
 
-            Assert.AreEqual(0, owner.DomainEvents.Count);
+            Assert.AreEqual(0, owner.GetDomainEvents().Count);
         }
 
         [TestMethod]
@@ -99,7 +99,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.ClearDomainEvents();
 
-            Assert.AreEqual(0, owner.DomainEvents.Count);
+            Assert.AreEqual(0, owner.GetDomainEvents().Count);
         }
 
         [TestMethod]
@@ -119,7 +119,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.AddValidator(new StubEntityRuleValidator<ParentRootEntity>(owner));
 
-            owner._validatorRules.GetValidators().Count.ShouldBeGreaterThan(0);
+            owner.Validators.GetValidators().Count.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]
@@ -193,7 +193,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBeGreaterThan(0);
+            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]
@@ -209,7 +209,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules()[0].Message.ShouldBe("Field Name is required");
+            owner.GetBrokenRules()[0].Message.ShouldBe("Field Name is required");
         }
 
         [TestMethod]
@@ -225,7 +225,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules()[0].Property.ShouldBe("FieldName");
+            owner.GetBrokenRules()[0].Property.ShouldBe("FieldName");
         }
 
         [TestMethod]
@@ -241,7 +241,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules()[0].Property.ShouldBe("FieldName");
+            owner.GetBrokenRules()[0].Property.ShouldBe("FieldName");
         }
 
         [TestMethod]
@@ -255,7 +255,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBe(0);
+            owner.GetBrokenRules().Count.ShouldBe(0);
         }
 
         [TestMethod]
@@ -269,7 +269,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBe(0);
+            owner.GetBrokenRules().Count.ShouldBe(0);
         }
 
         [TestMethod]
@@ -283,7 +283,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBeGreaterThan(0);
+            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]
@@ -297,7 +297,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBe(0);
+            owner.GetBrokenRules().Count.ShouldBe(0);
         }
 
         [TestMethod]
@@ -313,7 +313,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBeGreaterThan(0);
+            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]
@@ -327,7 +327,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBe(0);
+            owner.GetBrokenRules().Count.ShouldBe(0);
         }
 
         [TestMethod]
@@ -341,7 +341,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBeGreaterThan(0);
+            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]
@@ -355,7 +355,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBe(0);
+            owner.GetBrokenRules().Count.ShouldBe(0);
         }
 
         [TestMethod]
@@ -369,7 +369,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBeGreaterThan(0);
+            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]
@@ -383,7 +383,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBe(0);
+            owner.GetBrokenRules().Count.ShouldBe(0);
         }
 
         [TestMethod]
@@ -399,7 +399,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBeGreaterThan(0);
+            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]
@@ -413,7 +413,7 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBe(0);
+            owner.GetBrokenRules().Count.ShouldBe(0);
         }
 
         [TestMethod]
@@ -429,13 +429,13 @@ namespace BeyondNet.Ddd.Test
 
             owner.Validate();
 
-            owner._brokenRules.GetBrokenRules().Count.ShouldBeGreaterThan(0);
+            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]
         public void Should_Validate_Entity_Track_IsNew()
         {
-            owner.Tracking.IsNew.ShouldBeTrue();
+            owner.IsNew.ShouldBeTrue();
         }
     }
 }

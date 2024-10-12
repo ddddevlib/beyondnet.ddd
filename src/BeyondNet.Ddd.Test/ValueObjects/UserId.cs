@@ -24,7 +24,6 @@ namespace BeyondNet.Ddd.ValueObjects
         {
             base.AddValidators();
 
-            AddValidator(new StringRequiredValidator(this));
         }
 
         public static UserId Default()
@@ -34,7 +33,7 @@ namespace BeyondNet.Ddd.ValueObjects
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Value;
+            yield return GetValue();
         }
     }
 }

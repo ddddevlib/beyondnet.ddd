@@ -2,7 +2,7 @@
 
 namespace BeyondNet.Ddd.valueObjects
 {
-    public class Title : StringRequiredValueObject
+    public class Title : StringValueObject
     {
         public Title(string value) : base(value)
         {

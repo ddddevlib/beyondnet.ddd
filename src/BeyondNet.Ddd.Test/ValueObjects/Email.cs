@@ -1,5 +1,4 @@
-﻿using BeyondNet.Ddd;
-using BeyondNet.Ddd.ValueObjects.Validators;
+﻿using BeyondNet.Ddd.ValueObjects.Validators;
 
 namespace BeyondNet.Ddd.valueObjects
 {
@@ -11,7 +10,7 @@ namespace BeyondNet.Ddd.valueObjects
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Value;
+            yield return GetValue();
         }
 
         public override void AddValidators()
