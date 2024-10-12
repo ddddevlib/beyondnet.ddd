@@ -42,7 +42,8 @@ namespace BeyondNet.Ddd.Test.Stubs
             return new ParentRootEntity(props);
         }
 
-        public void CgangeName(Name name)
+  
+        public void ChangeName(Name name)
         {
             Props.Name.SetValue(name.GetValue());
             Props.Audit.Update("default");
@@ -77,6 +78,7 @@ namespace BeyondNet.Ddd.Test.Stubs
             Props.Status = ParentRootEntityStatus.Active;
             Props.Audit.Update("default");
         }
+        
     }
 
     public class ParentRootEntityStatus : Enumeration

@@ -15,8 +15,8 @@ namespace BeyondNet.Ddd.ValueObjects
         {
             base.AddValidators();
 
-            AddValidator(new NameValidator(this));
-            AddValidator(new StringRequiredValidator(this));
+            AddValidator(new NameValidator(this, nameof(NameValidator)));
+            AddValidator(new StringRequiredValidator(this, nameof(StringRequiredValidator)));
         }
 
         public static Name Create(string value)
@@ -28,7 +28,7 @@ namespace BeyondNet.Ddd.ValueObjects
 
     public class NameValidator : AbstractRuleValidator<ValueObject<string>>
     {
-        public NameValidator(ValueObject<string> subject) : base(subject)
+        public NameValidator(ValueObject<string> subject, string validatorName) : base(subject, validatorName)
         {
         }
 

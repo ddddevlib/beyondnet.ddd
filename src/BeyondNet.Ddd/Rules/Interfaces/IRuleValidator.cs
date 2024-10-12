@@ -7,6 +7,10 @@
     public interface IRuleValidator<T>
     {
         /// <summary>
+        /// Gets the name of the validator.
+        /// </summary>
+        string ValidatorName { get; }
+        /// <summary>
         /// Gets or sets the subject to be validated.
         /// </summary>
         T? Subject { get; }

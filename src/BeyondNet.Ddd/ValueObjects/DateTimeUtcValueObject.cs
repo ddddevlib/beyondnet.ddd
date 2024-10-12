@@ -36,7 +36,7 @@ namespace BeyondNet.Ddd.ValueObjects
         {
             base.AddValidators();
 
-            AddValidator(new DateTimeUtcValidator(this));
+            AddValidator(new DateTimeUtcValidator(this, nameof(DateTimeUtcValidator)));
         }
 
         /// <summary>

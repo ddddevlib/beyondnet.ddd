@@ -12,7 +12,7 @@ namespace BeyondNet.Ddd.ValueObjects.Validators
         /// Initializes a new instance of the <see cref="DateTimeUtcValidator"/> class.
         /// </summary>
         /// <param name="subject">The value object to validate.</param>
-        public DateTimeUtcValidator(ValueObject<DateTime> subject) : base(subject)
+        public DateTimeUtcValidator(ValueObject<DateTime> subject, string validatorName) : base(subject, validatorName)
         {
         }
 
@@ -20,7 +20,7 @@ namespace BeyondNet.Ddd.ValueObjects.Validators
         /// Adds the validation rules for the DateTime value.
         /// </summary>
         /// <param name="context">The rule context.</param>
-        public override void AddRules(RuleContext context)
+        public override void AddRules(RuleContext? context)
         {
             if (Subject!.GetValue().Kind != DateTimeKind.Utc)
             {

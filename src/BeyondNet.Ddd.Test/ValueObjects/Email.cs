@@ -17,7 +17,7 @@ namespace BeyondNet.Ddd.valueObjects
         {
             base.AddValidators();
 
-            AddValidator(new EmailValidator(this));
+            AddValidator(new EmailValidator(this, nameof(EmailValidator)));
 
         }
 

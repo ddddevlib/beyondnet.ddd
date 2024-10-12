@@ -18,7 +18,7 @@ namespace BeyondNet.Ddd.ValueObjects
         {
             base.AddValidators();
             
-            AddValidator(new StringRequiredValidator(this));
+            AddValidator(new StringRequiredValidator(this, nameof(NameValidator)));
         }
 
         public static Description DefaultValue => new Description(string.Empty);

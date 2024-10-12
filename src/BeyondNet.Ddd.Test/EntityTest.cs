@@ -71,7 +71,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            owner.AddDomainEvent(new StubMockDomainEvent());
+            owner.AddDomainEvent(new StubMockDomainEvent(nameof(StubMockDomainEvent)));
 
             Assert.AreEqual(1, owner.GetDomainEvents().Count);
         }
@@ -81,7 +81,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            var domainEvent = new StubMockDomainEvent();
+            var domainEvent = new StubMockDomainEvent(nameof(StubMockDomainEvent));
 
             owner.AddDomainEvent(domainEvent);
 
@@ -95,7 +95,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            owner.AddDomainEvent(new StubMockDomainEvent());
+            owner.AddDomainEvent(new StubMockDomainEvent(nameof(StubMockDomainEvent)));
 
             owner.ClearDomainEvents();
 
@@ -117,9 +117,9 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            owner.AddValidator(new StubEntityRuleValidator<ParentRootEntity>(owner));
+            owner.AddValidator(new StubEntityRuleValidator<ParentRootEntity>(owner, nameof(StubValueObjectValidator)));
 
-            owner.Validators.GetValidators().Count.ShouldBeGreaterThan(0);
+            owner.GetValidators().Count.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]
@@ -127,7 +127,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            owner.AddValidator(new StubEntityRuleValidator<ParentRootEntity>(owner));
+            owner.AddValidator(new StubEntityRuleValidator<ParentRootEntity>(owner, nameof(StubValueObjectValidator)));
 
             owner.Validate();
 
@@ -139,7 +139,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
 
@@ -155,7 +155,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 
@@ -169,7 +169,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_Valid()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
 
@@ -185,7 +185,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 
@@ -201,7 +201,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 
@@ -217,7 +217,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 
@@ -233,7 +233,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 
@@ -247,7 +247,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_PropertyName_Valid()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
 
@@ -261,7 +261,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
 
@@ -275,7 +275,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_NotValid()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 
@@ -289,7 +289,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid_With_MockValidator()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
 
@@ -305,7 +305,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 
@@ -319,7 +319,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid_With_MockValidator_With_BrokenRule()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
 
@@ -333,7 +333,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_NotValid_With_MockValidator_With_BrokenRule()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 
@@ -347,7 +347,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid_With_MockValidator_With_BrokenRule_Message()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
 
@@ -361,7 +361,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_NotValid_With_MockValidator_With_BrokenRule_Message()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 
@@ -375,7 +375,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid_With_MockValidator_With_BrokenRule_Message_NotValid()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
 
@@ -391,7 +391,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 
@@ -405,7 +405,7 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid_With_MockValidator_With_BrokenRule_Message_Valid()
         {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
 
@@ -421,7 +421,7 @@ namespace BeyondNet.Ddd.Test
         {
             owner.ChangeDescription(Description.Create(""));
 
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner);
+            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
 
             mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
 

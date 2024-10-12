@@ -16,12 +16,20 @@
         public DateTime CreatedAt { get; private set; }
 
         /// <summary>
+        /// Gets the name of the event.
+        /// </summary>
+        public string EventName { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DomainEvent"/> class.
         /// </summary>
-        protected DomainEvent()
+        protected DomainEvent(string eventName)
         {
+            ArgumentException.ThrowIfNullOrWhiteSpace(eventName, nameof(eventName));
+
             EventId = Guid.NewGuid().ToString();
             CreatedAt = DateTime.UtcNow;
+            EventName = eventName;
         }
     }
 }

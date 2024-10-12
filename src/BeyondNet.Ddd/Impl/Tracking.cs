@@ -20,38 +20,24 @@ namespace BeyondNet.Ddd.Impl
         public bool IsDirty { get; private set; }
 
         /// <summary>
-        /// Marks the object as clean (no changes).
+        /// Gets a value indicating whether the object is self-deleted.
         /// </summary>
-        /// <returns>The tracking object.</returns>
-        public static Tracking MarkClean()
-        {
-            return new Tracking()
-            {
-                IsNew = false,
-                IsDirty = false
-            };
-        }
+        public bool IsSelftDeleted { get; private set; }
 
         /// <summary>
-        /// Marks the object as dirty (has changes) based on the specified properties.
+        /// Gets a value indicating whether the object is deleted. 
+        /// </summary>
+        public bool IsDeleted { get; private set; }
+
+        /// <summary>
+        /// Gets the tracking object for the specified properties.
         /// </summary>
         /// <typeparam name="TProp">The type of the properties.</typeparam>
         /// <param name="props">The properties to check for changes.</param>
         /// <returns>The tracking object.</returns>
-        public static Tracking MarkDirty<TProp>(TProp props) where TProp : IProps
+        public static Tracking GetTracking<TProp>(TProp props) where TProp : IProps
         {
-            var isDirty = FindChanges(props);
-
-            if (isDirty)
-            {
-                return new Tracking()
-                {
-                    IsDirty = true,
-                    IsNew = false
-                };
-            }
-
-            return MarkNew();
+            return FindChanges(props);
         }
 
         /// <summary>
@@ -63,7 +49,9 @@ namespace BeyondNet.Ddd.Impl
             return new Tracking()
             {
                 IsDirty = true,
-                IsNew = false
+                IsNew = false,
+                IsSelftDeleted = false,
+                IsDeleted = false
             };
         }
 
@@ -76,7 +64,53 @@ namespace BeyondNet.Ddd.Impl
             return new Tracking
             {
                 IsDirty = false,
-                IsNew = true
+                IsNew = true,
+                IsSelftDeleted = false,
+                IsDeleted = false
+            };
+        }
+
+        /// <summary>
+        /// Marks the object as deleted.
+        /// </summary>
+        /// <returns>The tracking object</returns>
+        public static Tracking MarkSelfDeleted()
+        {
+            return new Tracking
+            {
+                IsDirty = false,
+                IsNew = false,
+                IsSelftDeleted = true,
+                IsDeleted = false
+            };
+        }
+
+        /// <summary>
+        /// Marks the object as deleted.
+        /// </summary>
+        /// <returns>The tracking object</returns>
+        public static Tracking MarkDeleted() {
+            return new Tracking
+            {
+                IsDirty = false,
+                IsNew = false,
+                IsSelftDeleted = false,
+                IsDeleted = true
+            };
+        }
+
+        /// <summary>
+        /// Marks the object as clean (no changes).
+        /// </summary>
+        /// <returns>The tracking object.</returns>
+        public static Tracking MarkClean()
+        {
+            return new Tracking()
+            {
+                IsNew = false,
+                IsDirty = false,
+                IsSelftDeleted = false,
+                IsDeleted = false
             };
         }
 
@@ -85,9 +119,11 @@ namespace BeyondNet.Ddd.Impl
         /// </summary>
         /// <typeparam name="TProp">The type of the properties.</typeparam>
         /// <param name="props">The properties to check for changes.</param>
-        /// <returns><c>true</c> if changes are found; otherwise, <c>false</c>.</returns>
-        protected static bool FindChanges<TProp>(TProp props) where TProp : IProps
+        /// <returns><c>Tracking</c> if changes are found; otherwise, <c>false</c>.</returns>
+        protected static Tracking FindChanges<TProp>(TProp props) where TProp : IProps
         {
+            var tracking = MarkClean();
+
             if (props == null)
             {
                 throw new ArgumentNullException(nameof(props));
@@ -105,11 +141,14 @@ namespace BeyondNet.Ddd.Impl
                 {
                     var trackingValue = (Tracking)trackingProperty.GetValue(value)!;
 
-                    if (trackingValue.IsDirty) return true;
+                    if (trackingValue.IsDirty) tracking = MarkDirty();
+                    if (trackingValue.IsNew) tracking = MarkNew();
+                    if (trackingValue.IsSelftDeleted) tracking = MarkSelfDeleted();
+                    if (trackingValue.IsDeleted) tracking = MarkDeleted();
                 }
             }
 
-            return false;
+            return tracking;
         }
     }
 }

@@ -4,6 +4,7 @@ using BeyondNet.Ddd.Extensions;
 using BeyondNet.Ddd.Rules.Impl;
 using BeyondNet.Ddd.Impl;
 using System.Text;
+using BeyondNet.Ddd.ValueObjects;
 
 namespace BeyondNet.Ddd
 {
@@ -18,21 +19,39 @@ namespace BeyondNet.Ddd
     {
         #region Members         
 
-        private List<INotification> _domainEvents = new List<INotification>();
+        /// <summary>
+        /// The domain events associated with the entity.
+        /// </summary>
+        private List<DomainEvent> _domainEvents = [];
 
-        private ValidatorRules<Entity<TEntity, TProps>> _validatorRules = new ValidatorRules<Entity<TEntity, TProps>>();
+        /// <summary>
+        /// The validator rules for the entity.
+        /// </summary>
+        private ValidatorRules<Entity<TEntity, TProps>> _validatorRules = new();
 
-        private BrokenRules _brokenRules = new BrokenRules();
+        /// <summary>
+        /// The broken rules of the entity.
+        /// </summary>
+        private BrokenRules _brokenRules = new();
 
-        private TProps? _props;
+        /// <summary>
+        /// The properties of the entity.
+        /// </summary>
+        private TProps _props;
 
+        /// <summary>
+        /// The version of the entity.
+        /// </summary>
         private int _version;
 
         #endregion
 
         #region Properties
 
-        public Tracking Tracking { get; private set; }
+        /// <summary>
+        /// Gets or sets the tracking state of the entity.
+        /// </summary>
+        public Tracking Tracking { get; private set; } = Tracking.MarkClean();
 
         /// <summary>
         /// Gets a value indicating whether the entity is valid.
@@ -56,6 +75,16 @@ namespace BeyondNet.Ddd
         public bool IsDirty => Tracking.IsDirty;
 
         /// <summary>
+        /// Gets a value indicating whether the entity is self deleted.
+        /// </summary>
+        public bool IsSelftDeleted => Tracking.IsSelftDeleted;
+
+        /// <summary>
+        /// Gets a value indicating whether the entity is deleted.
+        /// </summary>
+        public bool IsDeleted => Tracking.IsDeleted;
+
+        /// <summary>
         /// Gets or sets the version of the entity.
         /// </summary>
         public int Version
@@ -66,7 +95,7 @@ namespace BeyondNet.Ddd
 
         #endregion
 
-        #region Constructor
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Entity{TEntity, TProps}"/> class.
@@ -87,10 +116,27 @@ namespace BeyondNet.Ddd
 
         #endregion
 
+        #region CRUDMethods
+
+
+        public virtual void SelfDelete()
+        {
+            MarkSelfDeleted();
+        }
+
+        public virtual void Delete()
+        {
+            MarkDelete();
+        }
+
+        #endregion
+
         #region Methods
 
-        public ValidatorRules<Entity<TEntity, TProps>> Validators => _validatorRules;
-
+        /// <summary>
+        /// Gets the validator rules for the entity.
+        /// </summary>
+        public ReadOnlyCollection<AbstractRuleValidator<Entity<TEntity, TProps>>> GetValidators() => _validatorRules.GetValidators();
 
         /// <summary>
         /// Gets a copy of the entity properties.
@@ -118,8 +164,8 @@ namespace BeyondNet.Ddd
         public void SetProps(TProps props)
         {
             _props = props;
-            
-            Tracking = Tracking.MarkDirty(props);
+
+            Tracking = Tracking.MarkDirty();
         }
 
         /// <summary>
@@ -136,6 +182,38 @@ namespace BeyondNet.Ddd
             _version = version;
         }
 
+        /// <summary>
+        /// Marks the entity as dirty.
+        /// </summary>
+        public void MarkDirty()
+        {
+            Tracking = Tracking.MarkDirty();
+        }
+
+        /// <summary>
+        /// Marks the entity as new.
+        /// </summary>
+        public void MarkNew()
+        {
+            Tracking = Tracking.MarkNew();
+        }
+
+        /// <summary>
+        /// Marks the entity as self deleted.
+        /// </summary>
+        public void MarkSelfDeleted() 
+        {
+            Tracking = Tracking.MarkSelfDeleted();
+        } 
+
+        /// <summary>
+        /// Marks the entity as deleted.
+        /// </summary>
+        public void MarkDelete()
+        {
+            Tracking = Tracking.MarkDeleted();
+        }
+
         #endregion
 
         #region DomainEvents                        
@@ -144,8 +222,8 @@ namespace BeyondNet.Ddd
         /// Gets the domain events associated with the entity.
         /// </summary>
         /// <returns>The domain events associated with the entity.</returns>
-        public IReadOnlyCollection<INotification> GetDomainEvents()
-        {
+        public IReadOnlyCollection<DomainEvent> GetDomainEvents()
+        {            
             return _domainEvents.ToList().AsReadOnly();
         }
 
@@ -153,18 +231,24 @@ namespace BeyondNet.Ddd
         /// Adds a domain event to the entity.
         /// </summary>
         /// <param name="eventItem">The domain event to add.</param>
-        public void AddDomainEvent(INotification eventItem)
+        public void AddDomainEvent(DomainEvent eventItem)
         {
-            _domainEvents.Add(eventItem);
+            if (!_domainEvents.Where(p => p.EventName.ToUpperInvariant().Trim() == eventItem.EventName.ToUpperInvariant().Trim()).Any())
+            {
+                _domainEvents.Add(eventItem);
+            }
         }
 
         /// <summary>
         /// Removes a domain event from the entity.
         /// </summary>
         /// <param name="eventItem">The domain event to remove.</param>
-        public void RemoveDomainEvent(INotification eventItem)
+        public void RemoveDomainEvent(DomainEvent eventItem)
         {
-            _domainEvents?.Remove(eventItem);
+            if (_domainEvents.Where(p => p.EventName.ToUpperInvariant().Trim() == eventItem.EventName.ToUpperInvariant().Trim()).Any()) 
+            { 
+                _domainEvents?.Remove(eventItem);
+            }
         }
 
         /// <summary>
@@ -195,6 +279,7 @@ namespace BeyondNet.Ddd
             if (propsBrokenRules.Any())
             {
                 _brokenRules.Add(propsBrokenRules);
+                MarkDirty();
             }
         }
 
@@ -209,7 +294,10 @@ namespace BeyondNet.Ddd
         /// <param name="validator">The validator to add.</param>
         public void AddValidator(AbstractRuleValidator<Entity<TEntity, TProps>> validator)
         {
-            _validatorRules.Add(validator);
+            if (!_validatorRules.GetValidators().Any(p => p.ValidatorName.ToUpperInvariant().Trim() == validator.ValidatorName.ToUpperInvariant().Trim()))
+            {
+                _validatorRules.Add(validator);
+            }
         }
 
         /// <summary>
@@ -218,7 +306,7 @@ namespace BeyondNet.Ddd
         /// <param name="validators">The validators to add.</param>
         public void AddValidators(ICollection<AbstractRuleValidator<Entity<TEntity, TProps>>> validators)
         {
-            _validatorRules.Add(validators);
+            validators.ToList().ForEach(i => AddValidator(i));
         }
 
         /// <summary>
@@ -227,7 +315,10 @@ namespace BeyondNet.Ddd
         /// <param name="validator">The validator to remove.</param>
         public void RemoveValidator(AbstractRuleValidator<Entity<TEntity, TProps>> validator)
         {
-            _validatorRules.Remove(validator);
+            if (_validatorRules.GetValidators().Any(p => p.ValidatorName.ToUpperInvariant().Trim() == validator.ValidatorName.ToUpperInvariant().Trim()))
+            {
+                _validatorRules.Remove(validator);
+            }
         }
 
         /// <summary>
@@ -239,14 +330,21 @@ namespace BeyondNet.Ddd
             return _brokenRules.GetBrokenRules();
         }
 
+        /// <summary>
+        /// Gets the broken rules of the entity as a string.
+        /// </summary>
+        /// <returns>The broken rules of the entity as a string.</returns>
         public string GetBrokenRulesAsString()
         {
+            if (!_brokenRules.GetBrokenRules().Any()) return string.Empty;
+
             var sb = new StringBuilder();
-            
-            foreach (var rule in _brokenRules.GetBrokenRules()) {
+
+            foreach (var rule in _brokenRules.GetBrokenRules())
+            {
                 var line = $"Property: {rule.Property}, Message: {rule.Message}";
 
-                sb.Append(line);
+                sb.AppendLine(line);
             }
 
             return sb.ToString();
@@ -259,7 +357,15 @@ namespace BeyondNet.Ddd
         /// <param name="message">The message of the broken rule.</param>
         public void AddBrokenRule(string propertyName, string message)
         {
-            _brokenRules.Add(new BrokenRule(propertyName, message));
+            var brokenRule = new BrokenRule(propertyName, message);
+
+            if (!_brokenRules.GetBrokenRules().Any(x => x.Property.ToUpperInvariant() == brokenRule.Property.ToUpperInvariant()
+                                                        && x.Message.ToUpperInvariant() == brokenRule.Message.ToUpperInvariant()))
+            {
+                _brokenRules.Add(brokenRule);
+            }
+
+            _brokenRules.Add(brokenRule);
         }
 
         /// <inheritdoc/>

@@ -5,11 +5,11 @@ namespace BeyondNet.Ddd.Test.ValueObjects.Validators
 {
     public class StringRequiredValidator : AbstractRuleValidator<ValueObject<string>>
     {
-        public StringRequiredValidator(ValueObject<string> subject) : base(subject)
+        public StringRequiredValidator(ValueObject<string> subject, string validatorName) : base(subject, validatorName)
         {
         }
 
-        public override void AddRules(RuleContext context)
+        public override void AddRules(RuleContext? context)
         {
             if (String.IsNullOrWhiteSpace(Subject!.GetValue()))
             {

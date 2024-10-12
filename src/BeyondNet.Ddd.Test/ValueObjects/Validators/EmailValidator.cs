@@ -7,11 +7,11 @@ namespace BeyondNet.Ddd.ValueObjects.Validators
 {
     public class EmailValidator : AbstractRuleValidator<ValueObject<string>>
     {
-        public EmailValidator(ValueObject<string> subject) : base(subject)
+        public EmailValidator(ValueObject<string> subject, string validatorName) : base(subject, validatorName)
         {
         }
 
-        public override void AddRules(RuleContext context)
+        public override void AddRules(RuleContext? context)
         {
             var value = Subject!.GetValue();
 

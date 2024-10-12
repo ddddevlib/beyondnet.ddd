@@ -5,11 +5,11 @@ namespace BeyondNet.Ddd.Test.Stubs
 {
     public class StubEntityRuleValidator<T> : AbstractRuleValidator<Entity<ParentRootEntity, ParentRootProps>>
     {
-        public StubEntityRuleValidator(Entity<ParentRootEntity, ParentRootProps> subject) : base(subject)
+        public StubEntityRuleValidator(Entity<ParentRootEntity, ParentRootProps> subject, string validatorName) : base(subject, validatorName)
         {
         }
 
-        public override void AddRules(RuleContext context)
+        public override void AddRules(RuleContext? context)
         {
 
         }

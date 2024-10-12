@@ -161,7 +161,7 @@ namespace BeyondNet.Ddd.Test
         public void Should_Add_Validator_Ok() {
             var vo = Name.Create("foo");
 
-            vo.AddValidator(new StubValueObjectValidator(vo));
+            vo.AddValidator(new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)));
 
             Assert.IsTrue(vo.IsValid);
         }
@@ -171,8 +171,8 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("foo");
 
-            vo.AddValidator(new StubValueObjectValidator(vo));
-            vo.RemoveValidator(new StubValueObjectValidator(vo));
+            vo.AddValidator(new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)));
+            vo.RemoveValidator(new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)));
 
             Assert.IsTrue(vo.IsValid);
         }
@@ -182,7 +182,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("foo");
 
-            vo.AddValidators(new List<AbstractRuleValidator<ValueObject<string>>> { new StubValueObjectValidator(vo) });
+            vo.AddValidators(new List<AbstractRuleValidator<ValueObject<string>>> { new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)) });
 
             Assert.IsTrue(vo.IsValid);
         }
@@ -192,7 +192,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("");
 
-            vo.AddValidator(new StubValueObjectValidator(vo));
+            vo.AddValidator(new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)));
 
             Assert.IsFalse(vo.IsValid);
         }
@@ -202,7 +202,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("foo");
 
-            vo.AddValidator(new StubValueObjectValidator(vo));
+            vo.AddValidator(new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)));
 
             Assert.IsTrue(vo.IsValid);
         }
@@ -212,7 +212,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("");
 
-            vo.AddValidators(new List<AbstractRuleValidator<ValueObject<string>>> { new StubValueObjectValidator(vo) });
+            vo.AddValidators(new List<AbstractRuleValidator<ValueObject<string>>> { new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)) });
 
             Assert.IsFalse(vo.IsValid);
         }
@@ -222,7 +222,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("foo");
 
-            vo.AddValidators(new List<AbstractRuleValidator<ValueObject<string>>> { new StubValueObjectValidator(vo) });
+            vo.AddValidators(new List<AbstractRuleValidator<ValueObject<string>>> { new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)) });
 
             Assert.IsTrue(vo.IsValid);
         }
@@ -232,7 +232,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("");
 
-            vo.AddValidator(new StubValueObjectValidator(vo));
+            vo.AddValidator(new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)));
 
             Assert.IsFalse(vo.IsValid);
         }
@@ -242,7 +242,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("foo");
 
-            vo.AddValidator(new StubValueObjectValidator(vo));
+            vo.AddValidator(new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)));
 
             Assert.IsTrue(vo.IsValid);
         }
@@ -252,7 +252,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("");
 
-            vo.AddValidators(new List<AbstractRuleValidator<ValueObject<string>>> { new StubValueObjectValidator(vo) });
+            vo.AddValidators(new List<AbstractRuleValidator<ValueObject<string>>> { new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)) });
 
             Assert.IsFalse(vo.IsValid);
         }
@@ -262,7 +262,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("foo");
 
-            vo.AddValidators(new List<AbstractRuleValidator<ValueObject<string>>> { new StubValueObjectValidator(vo) });
+            vo.AddValidators(new List<AbstractRuleValidator<ValueObject<string>>> { new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)) });
 
             Assert.IsTrue(vo.IsValid);
         }
@@ -272,7 +272,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("");
 
-            vo.AddValidator(new StubValueObjectValidator(vo));
+            vo.AddValidator(new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)));
 
             Assert.IsFalse(vo.IsValid);
         }
@@ -282,7 +282,7 @@ namespace BeyondNet.Ddd.Test
         {
             var vo = Name.Create("foo");
 
-            vo.AddValidator(new StubValueObjectValidator(vo));
+            vo.AddValidator(new StubValueObjectValidator(vo, nameof(StubValueObjectValidator)));
 
             Assert.IsTrue(vo.IsValid);
         }

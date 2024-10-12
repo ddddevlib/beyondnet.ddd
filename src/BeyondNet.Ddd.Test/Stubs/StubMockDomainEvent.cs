@@ -2,6 +2,8 @@
 {
     public record StubMockDomainEvent : DomainEvent
     {
-
+        public StubMockDomainEvent(string eventName) : base(eventName)
+        {
+        }
     }
 }

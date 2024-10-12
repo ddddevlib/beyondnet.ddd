@@ -1,12 +1,19 @@
 ﻿using BeyondNet.Ddd.Rules.Impl;
-using System.Collections.ObjectModel;
 
 namespace BeyondNet.Ddd.Rules
 {
+    /// <summary>
+    /// Represents a collection of validator rules for a specific type.
+    /// </summary>
+    /// <typeparam name="T">The type of object to validate.</typeparam>
     public class ValidatorRules<T> where T : class
     {
-        public List<AbstractRuleValidator<T>> _businessRules = new List<AbstractRuleValidator<T>>();
+        private readonly Collection<AbstractRuleValidator<T>> _businessRules = [];
 
+        /// <summary>
+        /// Adds a rule to the collection of validator rules.
+        /// </summary>
+        /// <param name="rule">The rule to add.</param>
         public void Add(AbstractRuleValidator<T> rule)
         {
             ArgumentNullException.ThrowIfNull(rule, nameof(rule));
@@ -17,6 +24,10 @@ namespace BeyondNet.Ddd.Rules
             }
         }
 
+        /// <summary>
+        /// Adds a collection of rules to the collection of validator rules.
+        /// </summary>
+        /// <param name="rules">The rules to add.</param>
         public void Add(IEnumerable<AbstractRuleValidator<T>> rules)
         {
             ArgumentNullException.ThrowIfNull(rules, nameof(rules));
@@ -27,6 +38,10 @@ namespace BeyondNet.Ddd.Rules
             }
         }
 
+        /// <summary>
+        /// Removes a rule from the collection of validator rules.
+        /// </summary>
+        /// <param name="rule">The rule to remove.</param>
         public void Remove(AbstractRuleValidator<T> rule)
         {
             ArgumentNullException.ThrowIfNull(rule, nameof(rule));
@@ -37,6 +52,9 @@ namespace BeyondNet.Ddd.Rules
             }
         }
 
+        /// <summary>
+        /// Clears all the validator rules from the collection.
+        /// </summary>
         public void Clear()
         {
             if (_businessRules.Any())
@@ -45,9 +63,18 @@ namespace BeyondNet.Ddd.Rules
             }
         }
 
+        /// <summary>
+        /// Gets a read-only collection of the validator rules.
+        /// </summary>
+        /// <returns>A read-only collection of the validator rules.</returns>
         public ReadOnlyCollection<AbstractRuleValidator<T>> GetValidators() => _businessRules.ToList().AsReadOnly();
 
-        public ReadOnlyCollection<BrokenRule> GetBrokenRules(RuleContext context = null) 
+        /// <summary>
+        /// Gets a read-only collection of the broken rules based on the specified rule context.
+        /// </summary>
+        /// <param name="context">The rule context.</param>
+        /// <returns>A read-only collection of the broken rules.</returns>
+        public ReadOnlyCollection<BrokenRule> GetBrokenRules(RuleContext? context = null)
         {
             var result = new List<BrokenRule>();
 
@@ -59,10 +86,10 @@ namespace BeyondNet.Ddd.Rules
                 {
                     foreach (var brokenRule in brokenRules)
                     {
-                        if (!result.Any(x => x.Property.ToLower() == brokenRule.Property.ToLower()
-                                                               && x.Message.ToLower() == brokenRule.Message.ToLower()))
+                        if (!result.Any(x => x.Property.ToUpperInvariant().Trim() == brokenRule.Property.ToUpperInvariant().Trim()
+                                          && x.Message.ToUpperInvariant().Trim() == brokenRule.Message.ToUpperInvariant().Trim()))
                         {
-                            result.Add(brokenRule);
+                            result.Add(brokenRule);                             
                         }
                     }
                 }
@@ -70,7 +97,7 @@ namespace BeyondNet.Ddd.Rules
 
             return result.AsReadOnly();
         }
-    }   
+    }
 }
 
 
