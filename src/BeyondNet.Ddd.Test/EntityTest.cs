@@ -3,6 +3,7 @@ using BeyondNet.Ddd.Test.Stubs;
 using Moq;
 using BeyondNet.Ddd.ValueObjects;
 using Shouldly;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BeyondNet.Ddd.Test
 {
@@ -22,6 +23,29 @@ namespace BeyondNet.Ddd.Test
         {
             owner = null;
         }
+
+        [TestMethod]
+        public void Entity_Should_be_equal()
+        {
+            var id = Guid.NewGuid().ToString();
+
+            var root1 = ParentRootEntity.Create(IdValueObject.Create(id), Name.Create("foo"), Description.Create("bar"));
+            var root2 = ParentRootEntity.Create(IdValueObject.Create(id), Name.Create("foo"), Description.Create("bar"));
+
+            root1.Equals(root2).ShouldBeTrue();
+        }
+
+        [TestMethod]
+        public void Entity_Should_not_be_equal()
+        {
+            var id = Guid.NewGuid().ToString();
+
+            var root1 = ParentRootEntity.Create(IdValueObject.Create(id), Name.Create("foo"), Description.Create("bar"));
+            var root2 = ParentRootEntity.Create(IdValueObject.Create(Guid.NewGuid().ToString()), Name.Create("foo"), Description.Create("bar"));
+
+            root1.Equals(root2).ShouldBeFalse();
+        }
+
 
         [TestMethod]
         public void Should_Implement_Entity()

@@ -23,6 +23,16 @@ namespace BeyondNet.Ddd.Test.Stubs
             Audit = Audit.Create("default");
         }
 
+        public ParentRootProps(IdValueObject id, Name name, Description description)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Status = ParentRootEntityStatus.Active;
+            ComplexityLevel = ComplexityLevelEnum.Low;
+            Audit = Audit.Create("default");
+        }
+
         public object Clone()
         {
             return new ParentRootProps(Name, Description);
@@ -33,6 +43,13 @@ namespace BeyondNet.Ddd.Test.Stubs
     {
         private ParentRootEntity(ParentRootProps props) : base(props)
         {
+        }
+
+        public static ParentRootEntity Create(IdValueObject id, Name name, Description description)
+        {
+            var props = new ParentRootProps(id, name, description);
+
+            return new ParentRootEntity(props);
         }
 
         public static ParentRootEntity Create(Name name,Description description)

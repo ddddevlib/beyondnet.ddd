@@ -1,6 +1,7 @@
 ﻿using BeyondNet.Ddd.Rules.Impl;
 using BeyondNet.Ddd.Test.Stubs;
 using BeyondNet.Ddd.ValueObjects;
+using Shouldly;
 
 namespace BeyondNet.Ddd.Test
 {
@@ -17,21 +18,25 @@ namespace BeyondNet.Ddd.Test
         }
 
         [TestMethod]
-        public void Should_Be_Equal()
+        public void Should_Be_Equals()
         {
-            var fieldName1 = Description.Create("foo");
-            var fieldName2 = Description.Create("foo");
+            var id = Guid.NewGuid().ToString(); 
 
-            Assert.AreEqual(fieldName1, fieldName2);
+            var fieldName1 = IdValueObject.Create(id);
+            var fieldName2 = IdValueObject.Create(id);
+
+            fieldName1.Equals(fieldName2).ShouldBeTrue();
         }
 
         [TestMethod]
-        public void Should_Not_Be_Equal()
+        public void Should_Be_not_Equals()
         {
-            var fieldName1 = Description.Create("foo");
-            var fieldName2 = Description.Create("bar");
+            var id = Guid.NewGuid().ToString();
 
-            Assert.AreNotEqual(fieldName1, fieldName2);
+            var fieldName1 = IdValueObject.Create(id);
+            var fieldName2 = IdValueObject.Create(Guid.NewGuid().ToString());
+
+            fieldName1.Equals(fieldName2).ShouldBeFalse();
         }
 
         [TestMethod]

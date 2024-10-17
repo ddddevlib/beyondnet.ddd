@@ -380,11 +380,26 @@ namespace BeyondNet.Ddd
             if (GetType() != obj.GetType())
                 return false;
 
+            if (obj is Entity<TEntity, TProps> entity)  
+            {
+                var thisVOProps = GetPropsCopy();
+                var entityVOProps = entity.GetPropsCopy();
+
+                var thisVOPropsReflectedProps = thisVOProps.GetType().GetProperties();
+
+                foreach ( var prop in thisVOPropsReflectedProps) {
+                    
+                    var thisVOPropReflectedPropValue = prop.GetValue(thisVOPropsReflectedProps);
+
+
+                }
+            }
+
             return true;
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode()
+        public override int GetHashCode()    
         {
             return base.GetHashCode();
         }
