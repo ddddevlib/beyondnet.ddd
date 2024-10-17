@@ -35,7 +35,7 @@ namespace BeyondNet.Ddd.Test.Stubs
 
         public object Clone()
         {
-            return new ParentRootProps(Name, Description);
+            return new ParentRootProps(Id, Name, Description);
         }
     }
 

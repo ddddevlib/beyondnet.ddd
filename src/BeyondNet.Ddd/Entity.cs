@@ -4,7 +4,6 @@ using BeyondNet.Ddd.Extensions;
 using BeyondNet.Ddd.Rules.Impl;
 using BeyondNet.Ddd.Impl;
 using System.Text;
-using BeyondNet.Ddd.ValueObjects;
 
 namespace BeyondNet.Ddd
 {
@@ -368,6 +367,7 @@ namespace BeyondNet.Ddd
             _brokenRules.Add(brokenRule);
         }
 
+        /// TODO: How improve this method?, how reduce reflextion?
         /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
@@ -388,10 +388,16 @@ namespace BeyondNet.Ddd
                 var thisVOPropsReflectedProps = thisVOProps.GetType().GetProperties();
 
                 foreach ( var prop in thisVOPropsReflectedProps) {
-                    
-                    var thisVOPropReflectedPropValue = prop.GetValue(thisVOPropsReflectedProps);
+                    var thisPropValue = prop.GetValue(thisVOProps);
+                    var entityPropValue = prop.GetValue(entityVOProps);
 
+                    var getValue1 = thisPropValue!.GetType().GetMethod("GetValue");
+                    var getValue2 = entityPropValue!.GetType().GetMethod("GetValue");
 
+                    if (!thisPropValue!.Equals(entityPropValue))
+                    {
+                        return false;
+                    }
                 }
             }
 

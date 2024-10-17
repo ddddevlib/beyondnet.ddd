@@ -32,6 +32,8 @@ namespace BeyondNet.Ddd.Test
             var root1 = ParentRootEntity.Create(IdValueObject.Create(id), Name.Create("foo"), Description.Create("bar"));
             var root2 = ParentRootEntity.Create(IdValueObject.Create(id), Name.Create("foo"), Description.Create("bar"));
 
+            root1.Props.Id.GetValue().ShouldBe(root2.Props.Id.GetValue());
+
             root1.Equals(root2).ShouldBeTrue();
         }
 
