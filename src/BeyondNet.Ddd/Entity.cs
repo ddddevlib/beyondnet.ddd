@@ -380,14 +380,21 @@ namespace BeyondNet.Ddd
             if (GetType() != obj.GetType())
                 return false;
 
-            if (obj is Entity<TEntity, TProps> entity)  
+            return ReferenceEntityPropertiesEquals(obj);
+        }
+
+        // TODO: An entity can have ValueObjects and Primitive objects. How support this?   
+        private bool ReferenceEntityPropertiesEquals(object? obj)
+        {
+            if (obj is Entity<TEntity, TProps> entity)
             {
                 var thisVOProps = GetPropsCopy();
                 var entityVOProps = entity.GetPropsCopy();
 
                 var thisVOPropsReflectedProps = thisVOProps.GetType().GetProperties();
 
-                foreach ( var prop in thisVOPropsReflectedProps) {
+                foreach (var prop in thisVOPropsReflectedProps)
+                {
                     var thisPropValue = prop.GetValue(thisVOProps);
                     var entityPropValue = prop.GetValue(entityVOProps);
 
