@@ -115,8 +115,7 @@ namespace BeyondNet.Ddd
 
         #endregion
 
-        #region CRUDMethods
-
+        #region Methods
 
         public virtual void SelfDelete()
         {
@@ -127,10 +126,6 @@ namespace BeyondNet.Ddd
         {
             MarkDelete();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Gets the validator rules for the entity.
@@ -386,27 +381,26 @@ namespace BeyondNet.Ddd
         // TODO: An entity can have ValueObjects and Primitive objects. How support this?   
         private bool ReferenceEntityPropertiesEquals(object? obj)
         {
-            if (obj is Entity<TEntity, TProps> entity)
-            {
-                var thisVOProps = GetPropsCopy();
-                var entityVOProps = entity.GetPropsCopy();
+            if (obj is not Entity<TEntity, TProps> entity)
+                return false;
+            
+            var props = GetPropsCopy();
+            var propsOthers = entity.GetPropsCopy();
 
-                var thisVOPropsReflectedProps = thisVOProps.GetType().GetProperties();
+            if (props == null || propsOthers == null)
+                return false;
 
-                foreach (var prop in thisVOPropsReflectedProps)
-                {
-                    var thisPropValue = prop.GetValue(thisVOProps);
-                    var entityPropValue = prop.GetValue(entityVOProps);
+            var propsId= props.GetType().GetProperty("Id");
+            var propsOthersId = propsOthers.GetType().GetProperty("Id");
 
-                    var getValue1 = thisPropValue!.GetType().GetMethod("GetValue");
-                    var getValue2 = entityPropValue!.GetType().GetMethod("GetValue");
+            if (propsId == null || propsOthersId == null)
+                return false;
 
-                    if (!thisPropValue!.Equals(entityPropValue))
-                    {
-                        return false;
-                    }
-                }
-            }
+            var propsIdValue = propsId.GetValue(props);
+            var propsOthersIdValue = propsOthersId.GetValue(propsOthers);
+
+            if (!propsIdValue!.Equals(propsOthersIdValue))
+                return false;
 
             return true;
         }
