@@ -9,3 +9,4 @@ global using BeyondNet.Ddd.Rules.PropertyChange;
 global using BeyondNet.Ddd.AutoMapper.Impl;
 global using BeyondNet.Ddd.ValueObjects.Audit;
 global using BeyondNet.Ddd.Rules.Impl;
+global using BeyondNet.Ddd.Interfaces; 
