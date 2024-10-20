@@ -1,6 +1,6 @@
 ﻿namespace BeyondNet.Ddd.ValueObjects.Common
 {
-    public abstract class IntValueObject : ValueObject<int>
+    public class IntValueObject : ValueObject<int>
     {
         protected IntValueObject(int value) : base(value)
         {
@@ -9,6 +9,11 @@
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return GetValue();
+        }
+
+        public static implicit operator IntValueObject(int value)
+        {
+            return new IntValueObject(value);
         }
     }
 }

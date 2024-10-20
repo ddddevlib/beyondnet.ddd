@@ -1,4 +1,6 @@
-﻿namespace BeyondNet.Ddd.ValueObjects.Common
+﻿using BeyondNet.Ddd.ValueObjects.Validators;
+
+namespace BeyondNet.Ddd.ValueObjects.Common
 {
     /// <summary>
     /// Represents an identifier value object.
@@ -38,5 +40,18 @@
         /// Gets the default value of the IdValueObject, which is an empty identifier value.
         /// </summary>
         public static IdValueObject DefaultValue => new IdValueObject(Guid.Empty.ToString());
+
+        public static implicit operator IdValueObject(string value)
+        {
+            return new IdValueObject(value);
+        }
+
+        public override void AddValidators()
+        {
+            base.AddValidators();
+
+            AddValidator(new StringNotNullValidator(this));
+            AddValidator(new IdGuidValidator(this));
+        }
     }
 }
