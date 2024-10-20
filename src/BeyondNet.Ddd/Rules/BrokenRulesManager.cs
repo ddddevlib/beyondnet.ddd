@@ -5,7 +5,7 @@ namespace BeyondNet.Ddd.Rules
     /// <summary>
     /// Represents a collection of broken rules.
     /// </summary>
-    public class BrokenRules
+    public class BrokenRulesManager
     {
         private List<BrokenRule> _brokenRules = new();
 

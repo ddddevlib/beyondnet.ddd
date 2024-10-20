@@ -11,7 +11,7 @@ namespace BeyondNet.Ddd.Test
         public void Add_AddsBrokenRuleToList()
         {
             // Arrange
-            var brokenRules = new BrokenRules();
+            var brokenRules = new BrokenRulesManager();
             var brokenRule = new BrokenRule("Property", "Message");
 
             // Act
@@ -27,7 +27,7 @@ namespace BeyondNet.Ddd.Test
         public void Add_DoesNotAddDuplicateBrokenRule()
         {
             // Arrange
-            var brokenRules = new BrokenRules();
+            var brokenRules = new BrokenRulesManager();
             var brokenRule = new BrokenRule("Property", "Message");
 
             // Act
@@ -44,7 +44,7 @@ namespace BeyondNet.Ddd.Test
         public void Add_AddsMultipleBrokenRulesToList()
         {
             // Arrange
-            var brokenRules = new BrokenRules();
+            var brokenRules = new BrokenRulesManager();
             var brokenRule1 = new BrokenRule("Property1", "Message1");
             var brokenRule2 = new BrokenRule("Property2", "Message2");
 
@@ -63,7 +63,7 @@ namespace BeyondNet.Ddd.Test
         public void Remove_RemovesBrokenRuleFromList()
         {
             // Arrange
-            var brokenRules = new BrokenRules();
+            var brokenRules = new BrokenRulesManager();
             var brokenRule = new BrokenRule("Property", "Message");
             brokenRules.Add(brokenRule);
 
@@ -79,7 +79,7 @@ namespace BeyondNet.Ddd.Test
         public void Clear_RemovesAllBrokenRulesFromList()
         {
             // Arrange
-            var brokenRules = new BrokenRules();
+            var brokenRules = new BrokenRulesManager();
             var brokenRule1 = new BrokenRule("Property1", "Message1");
             var brokenRule2 = new BrokenRule("Property2", "Message2");
             brokenRules.Add(brokenRule1);

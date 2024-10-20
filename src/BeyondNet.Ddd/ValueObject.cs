@@ -18,7 +18,7 @@ namespace BeyondNet.Ddd
 
         private ValidatorRuleManager<AbstractRuleValidator<ValueObject<TValue>>> _validatorRules = new();
 
-        private BrokenRules _brokenRules = new BrokenRules();
+        private BrokenRulesManager _brokenRules = new BrokenRulesManager();
 
         public bool IsValid => !_brokenRules.GetBrokenRules().Any();
 
@@ -58,7 +58,6 @@ namespace BeyondNet.Ddd
 #pragma warning restore CA2214 // Do not call overridable methods in constructors
 
             Validate();
-
         }
 
         #endregion

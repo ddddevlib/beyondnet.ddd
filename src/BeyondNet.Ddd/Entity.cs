@@ -26,7 +26,7 @@ namespace BeyondNet.Ddd
         /// <summary>
         /// The domain events associated with the entity.
         /// </summary>
-        private List<DomainEvent> _domainEvents = [];
+        private DomainEventsManager _domainEvents = new();
 
         /// <summary>
         /// The validator rules for the entity.
@@ -36,7 +36,7 @@ namespace BeyondNet.Ddd
         /// <summary>
         /// The broken rules of the entity.
         /// </summary>
-        private BrokenRules _brokenRules = new();
+        private BrokenRulesManager _brokenRules = new();
 
         /// <summary>
         /// The properties of the entity.
@@ -119,7 +119,9 @@ namespace BeyondNet.Ddd
         {
             SetId(IdValueObject.Create(Guid.NewGuid().ToString()));
 
-            _brokenRules = new BrokenRules();
+            _brokenRules = new BrokenRulesManager();
+
+            _domainEvents = new DomainEventsManager();
 
             _version = 0;
 
@@ -134,7 +136,9 @@ namespace BeyondNet.Ddd
         {
             _id = id;
 
-            _brokenRules = new BrokenRules();
+            _brokenRules = new BrokenRulesManager();
+
+            _domainEvents = new DomainEventsManager();
 
             _version = 0;
 
@@ -261,7 +265,7 @@ namespace BeyondNet.Ddd
         /// <returns>The domain events associated with the entity.</returns>
         public IReadOnlyCollection<DomainEvent> GetDomainEvents()
         {            
-            return _domainEvents.ToList().AsReadOnly();
+            return _domainEvents.GetDomainEvents().ToList().AsReadOnly();   
         }
 
         /// <summary>
@@ -270,10 +274,7 @@ namespace BeyondNet.Ddd
         /// <param name="eventItem">The domain event to add.</param>
         public void AddDomainEvent(DomainEvent eventItem)
         {
-            if (!_domainEvents.Where(p => p.EventName.ToUpperInvariant().Trim() == eventItem.EventName.ToUpperInvariant().Trim()).Any())
-            {
-                _domainEvents.Add(eventItem);
-            }
+            _domainEvents.AddDomainEvent(eventItem);
         }
 
         /// <summary>
@@ -282,10 +283,7 @@ namespace BeyondNet.Ddd
         /// <param name="eventItem">The domain event to remove.</param>
         public void RemoveDomainEvent(DomainEvent eventItem)
         {
-            if (_domainEvents.Where(p => p.EventName.ToUpperInvariant().Trim() == eventItem.EventName.ToUpperInvariant().Trim()).Any()) 
-            { 
-                _domainEvents?.Remove(eventItem);
-            }
+           _domainEvents.RemoveDomainEvent(eventItem);
         }
 
         /// <summary>
@@ -293,7 +291,7 @@ namespace BeyondNet.Ddd
         /// </summary>
         public void ClearDomainEvents()
         {
-            _domainEvents?.Clear();
+            _domainEvents.ClearDomainEvents();
         }
 
         #endregion
@@ -359,7 +357,7 @@ namespace BeyondNet.Ddd
         /// Gets the broken rules of the entity.
         /// </summary>
         /// <returns>The broken rules of the entity.</returns>
-        public BrokenRules GetBrokenRules => _brokenRules;
+        public BrokenRulesManager GetBrokenRules => _brokenRules;
 
         /// <summary>
         /// Adds a broken rule to the entity.
