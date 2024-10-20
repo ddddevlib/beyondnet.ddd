@@ -1,0 +1,1 @@
+﻿global using BeyondNet.Ddd.ValueObjects.Common;

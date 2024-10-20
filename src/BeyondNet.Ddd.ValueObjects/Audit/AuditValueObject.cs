@@ -1,4 +1,4 @@
-﻿namespace BeyondNet.Ddd.Test.Entities.ValueObjects
+﻿namespace BeyondNet.Ddd.ValueObjects.Audit
 {
     public struct AuditProps
     {
@@ -14,15 +14,15 @@
         }
     }
 
-    public class Audit : ValueObject<AuditProps>
+    public class AuditValueObject : ValueObject<AuditProps>
     {
-        private Audit(AuditProps value) : base(value)
+        private AuditValueObject(AuditProps value) : base(value)
         {
         }
 
-        public static Audit Create(string createdBy)
+        public static AuditValueObject Create(string createdBy)
         {
-            return new Audit(new AuditProps
+            return new AuditValueObject(new AuditProps
             {
                 CreatedBy = createdBy,
                 CreatedAt = DateTime.Today.ToUniversalTime(),
@@ -30,9 +30,9 @@
             });
         }
 
-        public static Audit Load(AuditProps props)
+        public static AuditValueObject Load(AuditProps props)
         {
-            return new Audit(props);
+            return new AuditValueObject(props);
         }
 
         public void Update(string updatedBy)

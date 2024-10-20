@@ -1,6 +1,4 @@
-﻿using BeyondNet.Ddd.Rules.PropertyChange;
-
-namespace BeyondNet.Ddd.Test
+﻿namespace BeyondNet.Ddd.Test
 {
     [TestClass]
     public class NotifyPropertyChangedBaseTests

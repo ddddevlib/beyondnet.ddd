@@ -3,7 +3,6 @@ using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.Extensions;
 using BeyondNet.Ddd.Rules.Impl;
 using BeyondNet.Ddd.Services;
-using BeyondNet.Ddd.ValueObjects;
 
 namespace BeyondNet.Ddd
 {
@@ -18,11 +17,7 @@ namespace BeyondNet.Ddd
     {
         #region Members         
 
-        /// <summary>
-        /// ID of the entity.
-        /// </summary>
-        private IdValueObject _id = default!;   
-
+    
         /// <summary>
         /// The domain events associated with the entity.
         /// </summary>
@@ -51,15 +46,7 @@ namespace BeyondNet.Ddd
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the ID of the entity.
-        /// </summary>
-        public IdValueObject Id
-        {
-            get { return _id; }
-        }
+        #region Properties     
 
 
         /// <summary>
@@ -117,7 +104,7 @@ namespace BeyondNet.Ddd
         /// <param name="props">The properties of the entity.</param>
         protected Entity(TProps props)
         {
-            SetId(IdValueObject.Create(Guid.NewGuid().ToString()));
+ 
 
             _brokenRules = new BrokenRulesManager();
 
@@ -130,24 +117,7 @@ namespace BeyondNet.Ddd
             Validate();
 
             Tracking = TrackingManager.MarkNew();
-        }
-
-        protected Entity(IdValueObject id, TProps props)
-        {
-            _id = id;
-
-            _brokenRules = new BrokenRulesManager();
-
-            _domainEvents = new DomainEventsManager();
-
-            _version = 0;
-
-            _props = props;
-
-            Validate();
-
-            Tracking = TrackingManager.MarkDirty();
-        }
+        }           
 
         #endregion
 
@@ -194,17 +164,6 @@ namespace BeyondNet.Ddd
         public void SetProps(TProps props)
         {
             _props = props;
-
-            Tracking = TrackingManager.MarkDirty();
-        }
-
-        /// <summary>
-        /// Serts the property Id of the entity.
-        /// </summary>
-        /// <param name="id"></param>
-        public void SetId(IdValueObject id)
-        {
-            _id = id;
 
             Tracking = TrackingManager.MarkDirty();
         }

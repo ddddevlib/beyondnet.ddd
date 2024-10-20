@@ -1,13 +1,7 @@
-﻿using AutoMapper;
-using BeyondNet.Ddd.Test.AutoMapper;
-using BeyondNet.Ddd.Test.Dtos;
-using BeyondNet.Ddd.Test.Entities;
-using Shouldly;
-
-namespace BeyondNet.Ddd.Test
+﻿namespace BeyondNet.Ddd.Test
 {
     [TestClass]
-    public class AutoMapperCompatibilityTest
+    public class AutoMapperTest
     {
         Mapper mapper = null;
 
@@ -43,7 +37,7 @@ namespace BeyondNet.Ddd.Test
 
             var entityProps = mapper.Map<SampleEntityProps>(dto);
 
-            var entity = SampleEntity.Create(entityProps.Name);
+            var entity = SampleEntity.Create(IdValueObject.Create(), entityProps.Name, SampleReferenceId.Create(Guid.NewGuid().ToString(),"Deport"));
 
             entity.ShouldNotBeNull();
         }

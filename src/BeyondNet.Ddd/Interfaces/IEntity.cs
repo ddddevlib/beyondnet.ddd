@@ -1,6 +1,4 @@
-﻿using BeyondNet.Ddd.ValueObjects;
-
-namespace BeyondNet.Ddd.Interfaces
+﻿namespace BeyondNet.Ddd.Interfaces
 {
     /// <summary>
     /// Represents an entity in the domain.
@@ -11,6 +9,5 @@ namespace BeyondNet.Ddd.Interfaces
             where TEntity : class
             where TProps : class, IProps
     {
-        IdValueObject Id { get; }
     }
 }

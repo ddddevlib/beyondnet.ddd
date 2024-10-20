@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BeyondNet.Ddd.AutoMapper\BeyondNet.Ddd.AutoMapper.csproj" />
+    <ProjectReference Include="..\BeyondNet.Ddd.ValueObjects\BeyondNet.Ddd.ValueObjects.csproj" />
     <ProjectReference Include="..\BeyondNet.Ddd\BeyondNet.Ddd.csproj" />
   </ItemGroup>
 

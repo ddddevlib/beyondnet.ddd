@@ -1,4 +1,4 @@
-﻿namespace BeyondNet.Ddd.ValueObjects
+﻿namespace BeyondNet.Ddd.ValueObjects.Common
 {
     /// <summary>
     /// Represents an identifier value object.

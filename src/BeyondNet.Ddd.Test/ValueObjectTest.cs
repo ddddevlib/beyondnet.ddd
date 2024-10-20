@@ -1,8 +1,4 @@
-﻿using BeyondNet.Ddd.Test.Entities;
-using BeyondNet.Ddd.ValueObjects;
-using Shouldly;
-
-namespace BeyondNet.Ddd.Test
+﻿namespace BeyondNet.Ddd.Test
 {
     [TestClass]
     public class ValueObjectTest

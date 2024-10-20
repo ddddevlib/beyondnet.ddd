@@ -1,12 +1,4 @@
-﻿using BeyondNet.Ddd.Test.Entities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BeyondNet.Ddd.Test
+﻿namespace BeyondNet.Ddd.Test
 {
     [TestClass]
     public class EnumerationTest

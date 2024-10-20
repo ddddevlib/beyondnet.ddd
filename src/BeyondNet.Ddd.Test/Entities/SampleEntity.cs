@@ -1,6 +1,6 @@
 ﻿using BeyondNet.Ddd.Interfaces;
-using BeyondNet.Ddd.Test.Entities.ValueObjects;
-using BeyondNet.Ddd.ValueObjects;
+using BeyondNet.Ddd.ValueObjects.Audit;
+using BeyondNet.Ddd.ValueObjects.Common;
 
 namespace BeyondNet.Ddd.Test.Entities
 {
@@ -8,20 +8,24 @@ namespace BeyondNet.Ddd.Test.Entities
     {
         public IdValueObject Id { get; private set; } = default!;
         public SampleName Name { get; private set; }
+        public SampleReferenceId SampleReferenceId { get; set; }
         public SampleEntityStatus Status { get; set; }
-        public Audit Audit { get; private set; }
+        public AuditValueObject Audit { get; private set; }
 
 
-        public SampleEntityProps(SampleName name)
-        {
-            Name = name;
-            Status = SampleEntityStatus.Active;
-            Audit = Audit.Create("default");
-        }
-
-        public SampleEntityProps(IdValueObject id, SampleName name, SampleEntityStatus status, Audit audit)
+        public SampleEntityProps(IdValueObject id, SampleName name, SampleReferenceId sampleReferenceId)
         {
             Id = id;
+            Name = name;
+            SampleReferenceId = sampleReferenceId;
+            Status = SampleEntityStatus.Active;
+            Audit = AuditValueObject.Create("default");
+        }
+
+        public SampleEntityProps(IdValueObject id, SampleName name, SampleReferenceId sampleReferenceId, SampleEntityStatus status, AuditValueObject audit)
+        {
+            Id = id;
+            SampleReferenceId = sampleReferenceId;
             Name = name;
             Status = status;
             Audit = audit;
@@ -39,9 +43,9 @@ namespace BeyondNet.Ddd.Test.Entities
         {
         }
 
-        public static SampleEntity Create(SampleName name)
+        public static SampleEntity Create(IdValueObject id, SampleName name, SampleReferenceId sampleReferenceId)
         {
-            var props = new SampleEntityProps(name);
+            var props = new SampleEntityProps(id, name, sampleReferenceId);
 
             return new SampleEntity(props);
         }
@@ -51,7 +55,12 @@ namespace BeyondNet.Ddd.Test.Entities
             return new SampleEntity(props);
         }
 
-  
+        public void ChangeSampleReference(SampleReferenceId sampleReferenceId)
+        {
+            Props.SampleReferenceId = sampleReferenceId;
+            Props.Audit.Update("default");
+        }
+
         public void ChangeName(StringValueObject name)
         {
             Props.Name.SetValue(name.GetValue());

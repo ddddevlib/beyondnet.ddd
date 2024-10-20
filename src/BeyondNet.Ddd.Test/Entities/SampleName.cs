@@ -1,4 +1,4 @@
-﻿using BeyondNet.Ddd.ValueObjects;
+﻿using BeyondNet.Ddd.ValueObjects.Common;
 
 namespace BeyondNet.Ddd.Test.Entities
 { 

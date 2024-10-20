@@ -1,17 +1,18 @@
 ﻿using BeyondNet.Ddd.Test.Entities;
+using BeyondNet.Ddd.ValueObjects.Common;
 using Shouldly;
 
 namespace BeyondNet.Ddd.Test
 {
     [TestClass]
-    public class EntityTest
+    public class SampleEntityTest
     {
         SampleEntity sampleEntity = null;
 
         [TestInitialize]
         public void Setup()
         {
-            sampleEntity = SampleEntity.Create(SampleName.Create("foo"));
+            sampleEntity = SampleEntity.Create(IdValueObject.Create(), SampleName.Create("foo"), SampleReferenceId.Create(Guid.NewGuid().ToString(),"default"));
         }
 
         [TestCleanup]
@@ -23,9 +24,9 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void Entity_Should_not_be_equal()
         {
-            var id = Guid.NewGuid().ToString();
+            var id = Guid.NewGuid().ToString();                     
 
-            var other = SampleEntity.Create(SampleName.Create("foo"));
+            var other = SampleEntity.Create(IdValueObject.Create(), SampleName.Create("foo"), SampleReferenceId.Create(Guid.NewGuid().ToString(), "default"));
 
             sampleEntity.Equals(other).ShouldBeFalse();
         }

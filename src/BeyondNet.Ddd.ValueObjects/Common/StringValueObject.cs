@@ -1,4 +1,6 @@
-﻿namespace BeyondNet.Ddd.ValueObjects
+﻿using BeyondNet.Ddd.ValueObjects.Validators;
+
+namespace BeyondNet.Ddd.ValueObjects.Common
 {
     /// <summary>
     /// Represents a string value object.
@@ -20,6 +22,13 @@
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return GetValue();
+        }
+
+        public override void AddValidators()
+        {
+            base.AddValidators();
+
+            AddValidator(new StringNotNullValidator(this));
         }
 
         /// <summary>
