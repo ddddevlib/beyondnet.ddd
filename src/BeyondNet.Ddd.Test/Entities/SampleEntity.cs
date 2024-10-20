@@ -89,7 +89,7 @@
 
         public override void AddValidators()
         {
-            
+            AddValidator(new SampleEntityValidator(this));
         }
     }
 

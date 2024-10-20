@@ -1,6 +1,6 @@
 ﻿using BeyondNet.Ddd.Interfaces;
 
-namespace BeyondNet.Ddd.Services
+namespace BeyondNet.Ddd.Services.Impl
 {
     /// <summary>
     /// Represents a tracking mechanism for detecting changes in objects.
@@ -89,7 +89,8 @@ namespace BeyondNet.Ddd.Services
         /// Marks the object as deleted.
         /// </summary>
         /// <returns>The tracking object</returns>
-        public static TrackingManager MarkDeleted() {
+        public static TrackingManager MarkDeleted()
+        {
             return new TrackingManager
             {
                 IsDirty = false,

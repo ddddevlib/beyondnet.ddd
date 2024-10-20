@@ -1,6 +1,8 @@
-﻿namespace BeyondNet.Ddd.Services
+﻿using BeyondNet.Ddd.Services.Interfaces;
+
+namespace BeyondNet.Ddd.Services.Impl
 {
-    public class DomainEventsManager
+    public class DomainEventsManager : IDomainEventsManager
     {
         private List<DomainEvent> _domainEvents = [];
 

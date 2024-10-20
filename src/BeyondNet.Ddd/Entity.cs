@@ -2,7 +2,7 @@
 using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.Extensions;
 using BeyondNet.Ddd.Rules.Impl;
-using BeyondNet.Ddd.Services;
+using BeyondNet.Ddd.Services.Impl;
 
 namespace BeyondNet.Ddd
 {

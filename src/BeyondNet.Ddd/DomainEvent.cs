@@ -1,9 +1,11 @@
-﻿namespace BeyondNet.Ddd
+﻿using BeyondNet.Ddd.Interfaces;
+
+namespace BeyondNet.Ddd
 {
     /// <summary>
     /// Represents a domain event.
     /// </summary>
-    public abstract record DomainEvent : INotification
+    public abstract record DomainEvent : INotification, IDomainEvent
     {
         /// <summary>
         /// Gets the unique identifier of the event.
