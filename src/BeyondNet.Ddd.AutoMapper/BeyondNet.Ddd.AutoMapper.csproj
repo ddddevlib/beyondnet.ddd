@@ -14,6 +14,8 @@
     <PackageTags>Ddd, AutoMapper</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<AssemblyVersion>1.1.0</AssemblyVersion>
+	<VersionPrefix>1.1.0</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
