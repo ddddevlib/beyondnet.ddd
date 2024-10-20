@@ -5,7 +5,7 @@ namespace BeyondNet.Ddd
     /// <summary>
     /// Represents a domain event.
     /// </summary>
-    public abstract record DomainEvent : INotification, IDomainEvent
+    public abstract record DomainEvent : IDomainEvent
     {
         /// <summary>
         /// Gets the unique identifier of the event.
