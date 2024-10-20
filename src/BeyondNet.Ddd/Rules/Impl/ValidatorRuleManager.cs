@@ -80,7 +80,7 @@ namespace BeyondNet.Ddd.Rules.Impl
 
             foreach (var rule in _businessRules)
             {
-                var brokenRules = rule.Validate(context);
+                var brokenRules = rule.Validate(context!);
 
                 if (brokenRules.Any())
                 {

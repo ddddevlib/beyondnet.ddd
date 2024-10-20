@@ -1,11 +1,11 @@
 ﻿using BeyondNet.Ddd.Interfaces;
 
-namespace BeyondNet.Ddd.Impl
+namespace BeyondNet.Ddd.Services
 {
     /// <summary>
     /// Represents a tracking mechanism for detecting changes in objects.
     /// </summary>
-    public class Tracking
+    public class TrackingManager
     {
         private const string TrackingKeyName = "Tracking";
 
@@ -35,7 +35,7 @@ namespace BeyondNet.Ddd.Impl
         /// <typeparam name="TProp">The type of the properties.</typeparam>
         /// <param name="props">The properties to check for changes.</param>
         /// <returns>The tracking object.</returns>
-        public static Tracking GetTracking<TProp>(TProp props) where TProp : IProps
+        public static TrackingManager GetTracking<TProp>(TProp props) where TProp : IProps
         {
             return FindChanges(props);
         }
@@ -44,9 +44,9 @@ namespace BeyondNet.Ddd.Impl
         /// Marks the object as dirty (has changes).
         /// </summary>
         /// <returns>The tracking object.</returns>
-        public static Tracking MarkDirty()
+        public static TrackingManager MarkDirty()
         {
-            return new Tracking()
+            return new TrackingManager()
             {
                 IsDirty = true,
                 IsNew = false,
@@ -59,9 +59,9 @@ namespace BeyondNet.Ddd.Impl
         /// Marks the object as new.
         /// </summary>
         /// <returns>The tracking object.</returns>
-        public static Tracking MarkNew()
+        public static TrackingManager MarkNew()
         {
-            return new Tracking
+            return new TrackingManager
             {
                 IsDirty = false,
                 IsNew = true,
@@ -74,9 +74,9 @@ namespace BeyondNet.Ddd.Impl
         /// Marks the object as deleted.
         /// </summary>
         /// <returns>The tracking object</returns>
-        public static Tracking MarkSelfDeleted()
+        public static TrackingManager MarkSelfDeleted()
         {
-            return new Tracking
+            return new TrackingManager
             {
                 IsDirty = false,
                 IsNew = false,
@@ -89,8 +89,8 @@ namespace BeyondNet.Ddd.Impl
         /// Marks the object as deleted.
         /// </summary>
         /// <returns>The tracking object</returns>
-        public static Tracking MarkDeleted() {
-            return new Tracking
+        public static TrackingManager MarkDeleted() {
+            return new TrackingManager
             {
                 IsDirty = false,
                 IsNew = false,
@@ -103,9 +103,9 @@ namespace BeyondNet.Ddd.Impl
         /// Marks the object as clean (no changes).
         /// </summary>
         /// <returns>The tracking object.</returns>
-        public static Tracking MarkClean()
+        public static TrackingManager MarkClean()
         {
-            return new Tracking()
+            return new TrackingManager()
             {
                 IsNew = false,
                 IsDirty = false,
@@ -120,7 +120,7 @@ namespace BeyondNet.Ddd.Impl
         /// <typeparam name="TProp">The type of the properties.</typeparam>
         /// <param name="props">The properties to check for changes.</param>
         /// <returns><c>Tracking</c> if changes are found; otherwise, <c>false</c>.</returns>
-        protected static Tracking FindChanges<TProp>(TProp props) where TProp : IProps
+        protected static TrackingManager FindChanges<TProp>(TProp props) where TProp : IProps
         {
             var tracking = MarkClean();
 
@@ -139,7 +139,7 @@ namespace BeyondNet.Ddd.Impl
 
                 if (trackingProperty != null)
                 {
-                    var trackingValue = (Tracking)trackingProperty.GetValue(value)!;
+                    var trackingValue = (TrackingManager)trackingProperty.GetValue(value)!;
 
                     if (trackingValue.IsDirty) tracking = MarkDirty();
                     if (trackingValue.IsNew) tracking = MarkNew();

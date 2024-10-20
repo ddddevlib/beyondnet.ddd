@@ -1,4 +1,4 @@
-﻿using BeyondNet.Ddd.Impl;
+﻿using BeyondNet.Ddd.Services;
 using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.Rules;
 using BeyondNet.Ddd.Rules.Impl;
@@ -14,7 +14,7 @@ namespace BeyondNet.Ddd
     {
         #region Members
 
-        public Tracking Tracking { get; private set; }
+        public TrackingManager Tracking { get; private set; }
 
         private ValidatorRuleManager<AbstractRuleValidator<ValueObject<TValue>>> _validatorRules = new();
 
@@ -51,7 +51,7 @@ namespace BeyondNet.Ddd
 
             RegisterProperty(nameof(Value), typeof(TValue), value, ValuePropertyChanged);
 
-            Tracking = Tracking.MarkNew();
+            Tracking = TrackingManager.MarkNew();
 
 #pragma warning disable CA2214 // Do not call overridable methods in constructors
             AddValidators();
@@ -67,7 +67,7 @@ namespace BeyondNet.Ddd
 
         private void ValuePropertyChanged(AbstractNotifyPropertyChanged sender, NotifyPropertyChangedContextArgs e)
         {
-            Tracking = Tracking.MarkDirty();
+            Tracking = TrackingManager.MarkDirty();
 
             Validate();
         }

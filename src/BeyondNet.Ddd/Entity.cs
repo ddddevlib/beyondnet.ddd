@@ -2,7 +2,7 @@
 using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.Extensions;
 using BeyondNet.Ddd.Rules.Impl;
-using BeyondNet.Ddd.Impl;
+using BeyondNet.Ddd.Services;
 using System.Text;
 using BeyondNet.Ddd.ValueObjects;
 
@@ -66,7 +66,7 @@ namespace BeyondNet.Ddd
         /// <summary>
         /// Gets or sets the tracking state of the entity.
         /// </summary>
-        public Tracking Tracking { get; private set; } = Tracking.MarkClean();
+        public TrackingManager Tracking { get; private set; } = TrackingManager.MarkClean();
 
         /// <summary>
         /// Gets a value indicating whether the entity is valid.
@@ -128,7 +128,7 @@ namespace BeyondNet.Ddd
 
             Validate();
 
-            Tracking = Tracking.MarkNew();
+            Tracking = TrackingManager.MarkNew();
         }
 
         protected Entity(IdValueObject id, TProps props)
@@ -143,7 +143,7 @@ namespace BeyondNet.Ddd
 
             Validate();
 
-            Tracking = Tracking.MarkDirty();
+            Tracking = TrackingManager.MarkDirty();
         }
 
         #endregion
@@ -192,7 +192,7 @@ namespace BeyondNet.Ddd
         {
             _props = props;
 
-            Tracking = Tracking.MarkDirty();
+            Tracking = TrackingManager.MarkDirty();
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace BeyondNet.Ddd
         {
             _id = id;
 
-            Tracking = Tracking.MarkDirty();
+            Tracking = TrackingManager.MarkDirty();
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace BeyondNet.Ddd
         /// </summary>
         public void MarkDirty()
         {
-            Tracking = Tracking.MarkDirty();
+            Tracking = TrackingManager.MarkDirty();
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace BeyondNet.Ddd
         /// </summary>
         public void MarkNew()
         {
-            Tracking = Tracking.MarkNew();
+            Tracking = TrackingManager.MarkNew();
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace BeyondNet.Ddd
         /// </summary>
         public void MarkSelfDeleted() 
         {
-            Tracking = Tracking.MarkSelfDeleted();
+            Tracking = TrackingManager.MarkSelfDeleted();
         } 
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace BeyondNet.Ddd
         /// </summary>
         public void MarkDelete()
         {
-            Tracking = Tracking.MarkDeleted();
+            Tracking = TrackingManager.MarkDeleted();
         }
 
         #endregion

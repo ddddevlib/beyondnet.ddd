@@ -1,7 +1,13 @@
 ﻿namespace BeyondNet.Ddd.Rules
 {
+    /// <summary>
+    /// Represents the context for a rule.
+    /// </summary>
     public class RuleContext
     {
-        public List<(string, object)> Parameters { get; } = new List<(string, object)>();
+        /// <summary>
+        /// Gets the parameters associated with the rule context.
+        /// </summary>
+        public Collection<(string, object)> Parameters { get; } = new Collection<(string, object)>();
     }
 }
