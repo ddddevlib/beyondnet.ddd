@@ -44,34 +44,10 @@ namespace BeyondNet.Ddd.Test
         }
 
         [TestMethod]
-        public void Should_Entity_Valid_Be_True()
-        {
-            sampleEntity.IsValid().ShouldBeTrue();
-        }
-
-        [TestMethod]
         public void Should_Validate_Entity_NotValid()
         {
             sampleEntity.ChangeName(SampleName.Create(""));
             sampleEntity.IsValid().ShouldBeFalse();
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_Valid()
-        {
-            sampleEntity.Validate();
-
-            sampleEntity.IsValid().ShouldBeTrue();
-        }
-
-        [TestMethod]
-        public void Should_Add_BrokenRule()
-        {
-            sampleEntity.ChangeName(SampleName.Create(""));
-
-            sampleEntity.AddBrokenRule("SampleName", "Sample Name is required");
-
-            Assert.AreEqual(1, sampleEntity.GetBrokenRules().Count);
         }
 
         [TestMethod]

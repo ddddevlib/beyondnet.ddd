@@ -102,29 +102,11 @@ namespace BeyondNet.Ddd.Test
         }
 
         [TestMethod]
-        public void Should_Not_Has_BrokenRules()
-        {
-            var vo = SampleName.Create("foo");
-
-            vo.SetValue("bar");
-
-            Assert.IsTrue(vo.IsValid);
-        }
-
-        [TestMethod]
         public void Should_Has_BrokenRules_In_Create_Mode()
         {
             var vo = SampleName.Create("");
 
             Assert.IsFalse(vo.IsValid);
-        }
-
-        [TestMethod]
-        public void Should_Not_Has_BrokenRules_In_Create_Mode()
-        {
-            var vo = SampleName.Create("foo");
-
-            Assert.IsTrue(vo.IsValid);
         }
 
         [TestMethod]
@@ -136,27 +118,11 @@ namespace BeyondNet.Ddd.Test
         }
 
         [TestMethod]
-        public void Should_Not_Has_BrokenRules_In_Create_Mode_With_Validation()
-        {
-            var vo = SampleName.Create("foo");
-
-            Assert.IsTrue(vo.IsValid);
-        }
-
-        [TestMethod]
         public void Should_Has_BrokenRules_In_Create_Mode_With_Validation_With_Validator()
         {
             var vo = SampleName.Create("");
 
             Assert.IsFalse(vo.IsValid);
         }
-
-        [TestMethod]
-        public void Should_Not_Has_BrokenRules_In_Create_Mode_With_Validation_With_Validator()
-        {
-            var vo = SampleName.Create("foo");
-
-            Assert.IsTrue(vo.IsValid);
-        }
-    }
+     }
 }

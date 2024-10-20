@@ -3,7 +3,6 @@ using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.Extensions;
 using BeyondNet.Ddd.Rules.Impl;
 using BeyondNet.Ddd.Services;
-using System.Text;
 using BeyondNet.Ddd.ValueObjects;
 
 namespace BeyondNet.Ddd
@@ -22,7 +21,7 @@ namespace BeyondNet.Ddd
         /// <summary>
         /// ID of the entity.
         /// </summary>
-        private IdValueObject _id;   
+        private IdValueObject _id = default!;   
 
         /// <summary>
         /// The domain events associated with the entity.
@@ -344,7 +343,7 @@ namespace BeyondNet.Ddd
         /// <param name="validators">The validators to add.</param>
         public void AddValidators(ICollection<AbstractRuleValidator<TEntity>> validators)
         {
-            validators.ToList().ForEach(i => AddValidator(i));
+            _validatorRules.Add(validators);
         }
 
         /// <summary>
@@ -360,30 +359,7 @@ namespace BeyondNet.Ddd
         /// Gets the broken rules of the entity.
         /// </summary>
         /// <returns>The broken rules of the entity.</returns>
-        public ReadOnlyCollection<BrokenRule> GetBrokenRules()
-        {
-            return _brokenRules.GetBrokenRules();
-        }
-
-        /// <summary>
-        /// Gets the broken rules of the entity as a string.
-        /// </summary>
-        /// <returns>The broken rules of the entity as a string.</returns>
-        public string GetBrokenRulesAsString()
-        {
-            if (!_brokenRules.GetBrokenRules().Any()) return string.Empty;
-
-            var sb = new StringBuilder();
-
-            foreach (var rule in _brokenRules.GetBrokenRules())
-            {
-                var line = $"Property: {rule.Property}, Message: {rule.Message}";
-
-                sb.AppendLine(line);
-            }
-
-            return sb.ToString();
-        }
+        public BrokenRules GetBrokenRules => _brokenRules;
 
         /// <summary>
         /// Adds a broken rule to the entity.
@@ -393,13 +369,6 @@ namespace BeyondNet.Ddd
         public void AddBrokenRule(string propertyName, string message)
         {
             var brokenRule = new BrokenRule(propertyName, message);
-
-            if (!_brokenRules.GetBrokenRules().Any(x => x.Property.ToUpperInvariant() == brokenRule.Property.ToUpperInvariant()
-                                                        && x.Message.ToUpperInvariant() == brokenRule.Message.ToUpperInvariant()))
-            {
-                _brokenRules.Add(brokenRule);
-            }
-
             _brokenRules.Add(brokenRule);
         }
 

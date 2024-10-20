@@ -13,7 +13,7 @@ namespace BeyondNet.Ddd.Rules
         /// Adds a broken rule to the collection.
         /// </summary>
         /// <param name="brokenRule">The broken rule to add.</param>
-        public void Add(BrokenRule brokenRule)
+        public  void Add(BrokenRule brokenRule)
         {
             ArgumentNullException.ThrowIfNull(brokenRule, nameof(brokenRule));
 
@@ -76,16 +76,20 @@ namespace BeyondNet.Ddd.Rules
         }
 
         /// <summary>
-        /// Returns a string representation of the broken rules.
+        /// Gets the broken rules of the entity as a string.
         /// </summary>
-        /// <returns>A string representation of the broken rules.</returns>
-        public override string ToString()
+        /// <returns>The broken rules of the entity as a string.</returns>
+        public string GetBrokenRulesAsString()
         {
+            if (!_brokenRules.Any()) return string.Empty;
+
             var sb = new StringBuilder();
 
-            foreach (var brokenRule in _brokenRules)
+            foreach (var rule in _brokenRules)
             {
-                sb.AppendLine(brokenRule.Message);
+                var line = $"Property: {rule.Property}, Message: {rule.Message}";
+
+                sb.AppendLine(line);
             }
 
             return sb.ToString();

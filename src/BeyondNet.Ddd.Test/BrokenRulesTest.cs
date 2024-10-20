@@ -94,30 +94,13 @@ namespace BeyondNet.Ddd.Test
         }
 
         [TestMethod]
-        public void ToString_ReturnsConcatenatedMessages()
-        {
-            // Arrange
-            var brokenRules = new BrokenRules();
-            var brokenRule1 = new BrokenRule("Property1", "Message1");
-            var brokenRule2 = new BrokenRule("Property2", "Message2");
-            brokenRules.Add(brokenRule1);
-            brokenRules.Add(brokenRule2);
-
-            // Act
-            var result = brokenRules.ToString();
-
-            // Assert
-            Assert.AreEqual("Message1\r\nMessage2\r\n", result);
-        }
-
-        [TestMethod]
         public void GetBrokenRules_ReturnsReadOnlyCollection()
         {
             // Arrange
             var obj = SampleEntity.Create(SampleName.Create(""));
 
             // Act
-            var result = obj.GetBrokenRulesAsString();
+            var result = obj.GetBrokenRules.GetBrokenRulesAsString();
 
             // Assert
             result!.Length.ShouldBeGreaterThan(0);
