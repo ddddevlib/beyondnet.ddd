@@ -6,33 +6,15 @@ namespace BeyondNet.Ddd.Rules.Impl
     /// Represents an abstract base class for rule validators.
     /// </summary>
     /// <typeparam name="T">The type of the subject to be validated.</typeparam>
-    public abstract class AbstractRuleValidator<T> : IRuleValidator<T> where T : class
+    public abstract class AbstractRuleValidator<TSubject> : IRuleValidator
     {
         private List<BrokenRule> brokenRules = new List<BrokenRule>();
 
-        /// <summary>
-        /// Gets the name of the validator.
-        /// </summary>
-        public string ValidatorName { get; }
+        public TSubject Subject { get; }
 
-        /// <summary>
-        /// Gets the name of the rule.
-        /// </summary>
-        public string RuleName => this.GetType().Name;
-
-        /// <summary>
-        /// Gets the subject to be validated.
-        /// </summary>
-        public T? Subject { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AbstractRuleValidator{T}"/> class.
-        /// </summary>
-        /// <param name="subject">The subject to be validated.</param>
-        protected AbstractRuleValidator(T subject, string validatorName)
+        protected AbstractRuleValidator(TSubject subject)
         {
             Subject = subject;
-            ValidatorName = validatorName;
         }
 
         /// <summary>
@@ -65,5 +47,8 @@ namespace BeyondNet.Ddd.Rules.Impl
         {
             brokenRules.Add(new BrokenRule(propertyName, message));
         }
+
+        public Type GetValidatorDescriptor() => this.GetType();
+        public Type GetSubjectDescriptor() => Subject!.GetType();
     }
 }

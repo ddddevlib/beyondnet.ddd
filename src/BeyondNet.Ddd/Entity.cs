@@ -4,6 +4,7 @@ using BeyondNet.Ddd.Extensions;
 using BeyondNet.Ddd.Rules.Impl;
 using BeyondNet.Ddd.Impl;
 using System.Text;
+using BeyondNet.Ddd.ValueObjects;
 
 namespace BeyondNet.Ddd
 {
@@ -12,11 +13,16 @@ namespace BeyondNet.Ddd
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <typeparam name="TProps">The type of the entity properties.</typeparam>
-    public abstract class Entity<TEntity, TProps>
-            where TEntity : Entity<TEntity, TProps>
-            where TProps : class, IProps
+    public abstract class Entity<TEntity, TProps> 
+            where TEntity : class 
+            where TProps  : class, IProps
     {
         #region Members         
+
+        /// <summary>
+        /// ID of the entity.
+        /// </summary>
+        private IdValueObject _id;   
 
         /// <summary>
         /// The domain events associated with the entity.
@@ -26,7 +32,7 @@ namespace BeyondNet.Ddd
         /// <summary>
         /// The validator rules for the entity.
         /// </summary>
-        private ValidatorRules<Entity<TEntity, TProps>> _validatorRules = new();
+        private ValidatorRuleManager<AbstractRuleValidator<TEntity>> _validatorRules = new();
 
         /// <summary>
         /// The broken rules of the entity.
@@ -43,9 +49,19 @@ namespace BeyondNet.Ddd
         /// </summary>
         private int _version;
 
+
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets or sets the ID of the entity.
+        /// </summary>
+        public IdValueObject Id
+        {
+            get { return _id; }
+        }
+
 
         /// <summary>
         /// Gets or sets the tracking state of the entity.
@@ -102,6 +118,8 @@ namespace BeyondNet.Ddd
         /// <param name="props">The properties of the entity.</param>
         protected Entity(TProps props)
         {
+            SetId(IdValueObject.Create(Guid.NewGuid().ToString()));
+
             _brokenRules = new BrokenRules();
 
             _version = 0;
@@ -111,6 +129,21 @@ namespace BeyondNet.Ddd
             Validate();
 
             Tracking = Tracking.MarkNew();
+        }
+
+        protected Entity(IdValueObject id, TProps props)
+        {
+            _id = id;
+
+            _brokenRules = new BrokenRules();
+
+            _version = 0;
+
+            _props = props;
+
+            Validate();
+
+            Tracking = Tracking.MarkDirty();
         }
 
         #endregion
@@ -130,7 +163,7 @@ namespace BeyondNet.Ddd
         /// <summary>
         /// Gets the validator rules for the entity.
         /// </summary>
-        public ReadOnlyCollection<AbstractRuleValidator<Entity<TEntity, TProps>>> GetValidators() => _validatorRules.GetValidators();
+        public ReadOnlyCollection<AbstractRuleValidator<TEntity>> GetValidators() => _validatorRules.GetValidators().AsReadOnly();
 
         /// <summary>
         /// Gets a copy of the entity properties.
@@ -158,6 +191,17 @@ namespace BeyondNet.Ddd
         public void SetProps(TProps props)
         {
             _props = props;
+
+            Tracking = Tracking.MarkDirty();
+        }
+
+        /// <summary>
+        /// Serts the property Id of the entity.
+        /// </summary>
+        /// <param name="id"></param>
+        public void SetId(IdValueObject id)
+        {
+            _id = id;
 
             Tracking = Tracking.MarkDirty();
         }
@@ -278,27 +322,27 @@ namespace BeyondNet.Ddd
         }
 
         /// <summary>
-        /// Adds custom validators for the entity.
+        /// Adds the validators for the value object.
         /// </summary>
-        public virtual void AddValidators() { }
+        public virtual void AddValidators()
+        {
+
+        }
 
         /// <summary>
         /// Adds a validator for the entity.
         /// </summary>
         /// <param name="validator">The validator to add.</param>
-        public void AddValidator(AbstractRuleValidator<Entity<TEntity, TProps>> validator)
+        public void AddValidator(AbstractRuleValidator<TEntity> validator)
         {
-            if (!_validatorRules.GetValidators().Any(p => p.ValidatorName.ToUpperInvariant().Trim() == validator.ValidatorName.ToUpperInvariant().Trim()))
-            {
-                _validatorRules.Add(validator);
-            }
+            _validatorRules.Add(validator);
         }
 
         /// <summary>
         /// Adds multiple validators for the entity.
         /// </summary>
         /// <param name="validators">The validators to add.</param>
-        public void AddValidators(ICollection<AbstractRuleValidator<Entity<TEntity, TProps>>> validators)
+        public void AddValidators(ICollection<AbstractRuleValidator<TEntity>> validators)
         {
             validators.ToList().ForEach(i => AddValidator(i));
         }
@@ -307,12 +351,9 @@ namespace BeyondNet.Ddd
         /// Removes a validator from the entity.
         /// </summary>
         /// <param name="validator">The validator to remove.</param>
-        public void RemoveValidator(AbstractRuleValidator<Entity<TEntity, TProps>> validator)
+        public void RemoveValidator(AbstractRuleValidator<TEntity> validator)
         {
-            if (_validatorRules.GetValidators().Any(p => p.ValidatorName.ToUpperInvariant().Trim() == validator.ValidatorName.ToUpperInvariant().Trim()))
-            {
-                _validatorRules.Remove(validator);
-            }
+           _validatorRules.Remove(validator);
         }
 
         /// <summary>
@@ -383,21 +424,15 @@ namespace BeyondNet.Ddd
         {
             if (obj is not Entity<TEntity, TProps> entity)
                 return false;
-            
-            var props = GetPropsCopy();
-            var propsOthers = entity.GetPropsCopy();
 
-            if (props == null || propsOthers == null)
-                return false;
-
-            var propsId= props.GetType().GetProperty("Id");
-            var propsOthersId = propsOthers.GetType().GetProperty("Id");
+            var propsId= this.GetType().GetProperty("Id");
+            var propsOthersId = obj.GetType().GetProperty("Id");
 
             if (propsId == null || propsOthersId == null)
                 return false;
 
-            var propsIdValue = propsId.GetValue(props);
-            var propsOthersIdValue = propsOthersId.GetValue(propsOthers);
+            var propsIdValue = propsId.GetValue(this);
+            var propsOthersIdValue = propsOthersId.GetValue(obj);
 
             if (!propsIdValue!.Equals(propsOthersIdValue))
                 return false;

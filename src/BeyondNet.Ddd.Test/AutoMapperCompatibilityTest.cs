@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BeyondNet.Ddd.Test.AutoMapper;
-using BeyondNet.Ddd.Test.Stubs;
-using BeyondNet.Ddd.ValueObjects;
+using BeyondNet.Ddd.Test.Dtos;
+using BeyondNet.Ddd.Test.Entities;
 using Shouldly;
 
 namespace BeyondNet.Ddd.Test
@@ -33,46 +33,19 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void MapperFromDtoToBOEntityShouldBeOk()
         {
-            var dto = new ParentRootDto
+            var dto = new SampleEntityDto
             {
                 Id = "1",
                 Name = "foo",
-                Description = "foo",
-                ComplexityLevel = 1,
                 Status = 2                
             };
 
-            dto.Audit = new AuditDto
-            {
-                CreatedBy = "foo",
-                CreatedAt = DateTime.Now,
-                UpdatedBy = "foo",
-                UpdatedAt = DateTime.Now,
-                TimeSpan = TimeSpan.FromDays(1).ToString()
-            };
 
-            var entityProps = mapper.Map<ParentRootProps>(dto);
+            var entityProps = mapper.Map<SampleEntityProps>(dto);
 
-            var entity = ParentRootEntity.Create(entityProps.Name, entityProps.Description);
+            var entity = SampleEntity.Create(entityProps.Name);
 
             entity.ShouldNotBeNull();
-        }
-
-        [TestMethod]
-        public void MapperFromDtoToCommandShouldBeOk()
-        {
-            var dto = new ParentRootDto
-            {
-                Id = "1",
-                Name = "foo",
-                Description = "foo",
-                ComplexityLevel = 1,
-                Status = 2
-            };
-
-            var command = mapper.Map<ParentRootCommmand>(dto);
-
-            command.ShouldNotBeNull();
         }
 
         [TestCleanup]

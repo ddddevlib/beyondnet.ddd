@@ -1,6 +1,4 @@
 ﻿using BeyondNet.Ddd.Rules.PropertyChange;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace BeyondNet.Ddd.Test
 {

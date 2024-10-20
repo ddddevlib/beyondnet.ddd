@@ -3,22 +3,18 @@
     /// <summary>
     /// Represents a rule validator for a specific type.
     /// </summary>
-    /// <typeparam name="T">The type of the subject to be validated.</typeparam>
-    public interface IRuleValidator<T>
+    public interface IRuleValidator
     {
         /// <summary>
-        /// Gets the name of the validator.
+        /// Gets the validator associated with the rule.
         /// </summary>
-        string ValidatorName { get; }
-        /// <summary>
-        /// Gets or sets the subject to be validated.
-        /// </summary>
-        T? Subject { get; }
+        Type GetValidatorDescriptor();
 
         /// <summary>
-        /// Gets the name of the rule.
+        /// Gets the name of the subject.
         /// </summary>
-        string RuleName { get; }
+        /// <returns></returns>
+        Type GetSubjectDescriptor();
 
         /// <summary>
         /// Validates the rule against the specified context.

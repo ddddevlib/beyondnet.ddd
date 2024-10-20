@@ -1,4 +1,4 @@
-﻿namespace BeyondNet.Ddd.ValueObjects
+﻿namespace BeyondNet.Ddd.Test.Entities.ValueObjects
 {
     public struct AuditProps
     {
@@ -37,10 +37,10 @@
 
         public void Update(string updatedBy)
         {
-            this.SetValue(new AuditProps
+            SetValue(new AuditProps
             {
-                CreatedBy = this.GetValue().CreatedBy,
-                CreatedAt = this.GetValue().CreatedAt,
+                CreatedBy = GetValue().CreatedBy,
+                CreatedAt = GetValue().CreatedAt,
                 UpdatedBy = updatedBy,
                 UpdatedAt = DateTime.Today.ToUniversalTime(),
                 TimeSpan = TimeSpan.FromTicks(DateTime.Today.Ticks).ToString(),

@@ -16,7 +16,7 @@ namespace BeyondNet.Ddd
 
         public Tracking Tracking { get; private set; }
 
-        private ValidatorRules<ValueObject<TValue>> _validatorRules = new ValidatorRules<ValueObject<TValue>>();
+        private ValidatorRuleManager<AbstractRuleValidator<ValueObject<TValue>>> _validatorRules = new();
 
         private BrokenRules _brokenRules = new BrokenRules();
 

@@ -1,40 +1,23 @@
-﻿using BeyondNet.Ddd.Rules;
-using BeyondNet.Ddd.Test.Stubs;
-using Moq;
-using BeyondNet.Ddd.ValueObjects;
+﻿using BeyondNet.Ddd.Test.Entities;
 using Shouldly;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BeyondNet.Ddd.Test
 {
     [TestClass]
     public class EntityTest
     {
-        ParentRootEntity owner;
+        SampleEntity sampleEntity = null;
 
         [TestInitialize]
         public void Setup()
         {
-            owner = ParentRootEntity.Create(Name.Create("foo"), Description.Create("bar"));
+            sampleEntity = SampleEntity.Create(SampleName.Create("foo"));
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            owner = null;
-        }
-
-        [TestMethod]
-        public void Entity_Should_be_equal()
-        {
-            var id = Guid.NewGuid().ToString();
-
-            var root1 = ParentRootEntity.Create(IdValueObject.Create(id), Name.Create("foo"), Description.Create("bar"));
-            var root2 = ParentRootEntity.Create(IdValueObject.Create(id), Name.Create("foo"), Description.Create("bar"));
-
-            root1.Props.Id.GetValue().ShouldBe(root2.Props.Id.GetValue());
-
-            root1.Equals(root2).ShouldBeTrue();
+            sampleEntity = null;
         }
 
         [TestMethod]
@@ -42,426 +25,105 @@ namespace BeyondNet.Ddd.Test
         {
             var id = Guid.NewGuid().ToString();
 
-            var root1 = ParentRootEntity.Create(IdValueObject.Create(id), Name.Create("foo"), Description.Create("bar"));
-            var root2 = ParentRootEntity.Create(IdValueObject.Create(Guid.NewGuid().ToString()), Name.Create("foo"), Description.Create("bar"));
+            var other = SampleEntity.Create(SampleName.Create("foo"));
 
-            root1.Equals(root2).ShouldBeFalse();
+            sampleEntity.Equals(other).ShouldBeFalse();
         }
 
 
         [TestMethod]
         public void Should_Implement_Entity()
         {
-            Assert.IsInstanceOfType(owner, typeof(ParentRootEntity));
+            Assert.IsInstanceOfType(sampleEntity, typeof(SampleEntity));
         }
 
         [TestMethod]
         public void Should_Have_Empty_DomainEvents_Collection()
         {
-            Assert.AreEqual(0, owner.GetDomainEvents().Count);
+            Assert.AreEqual(0, sampleEntity.GetDomainEvents().Count);
         }
 
         [TestMethod]
         public void Should_Entity_Valid_Be_True()
         {
-            owner.IsValid().ShouldBeTrue();
+            sampleEntity.IsValid().ShouldBeTrue();
         }
 
         [TestMethod]
         public void Should_Validate_Entity_NotValid()
         {
-            owner.ChangeDescription(Description.Create(""));
-            owner.IsValid().ShouldBeFalse();
+            sampleEntity.ChangeName(SampleName.Create(""));
+            sampleEntity.IsValid().ShouldBeFalse();
         }
 
         [TestMethod]
         public void Should_Validate_Entity_Valid()
         {
-            owner.Validate();
+            sampleEntity.Validate();
 
-            owner.IsValid().ShouldBeTrue();
+            sampleEntity.IsValid().ShouldBeTrue();
         }
 
         [TestMethod]
         public void Should_Add_BrokenRule()
         {
-            owner.ChangeDescription(Description.Create(""));
+            sampleEntity.ChangeName(SampleName.Create(""));
 
-            owner.AddBrokenRule("FieldName", "Field Name is required");
+            sampleEntity.AddBrokenRule("SampleName", "Sample Name is required");
 
-            Assert.AreEqual(1, owner.GetBrokenRules().Count);
+            Assert.AreEqual(1, sampleEntity.GetBrokenRules().Count);
         }
 
         [TestMethod]
         public void Should_Add_DomainEvent()
         {
-            owner.ChangeDescription(Description.Create(""));
+            sampleEntity.ChangeName(SampleName.Create(""));
 
-            owner.AddDomainEvent(new StubMockDomainEvent(nameof(StubMockDomainEvent)));
+            sampleEntity.AddDomainEvent(new SampleCreatedDomainEvent(nameof(SampleCreatedDomainEvent)));
 
-            Assert.AreEqual(1, owner.GetDomainEvents().Count);
+            Assert.AreEqual(1, sampleEntity.GetDomainEvents().Count);
         }
 
         [TestMethod]
         public void Should_Remove_DomainEvent()
         {
-            owner.ChangeDescription(Description.Create(""));
+            sampleEntity.ChangeName(SampleName.Create(""));
 
-            var domainEvent = new StubMockDomainEvent(nameof(StubMockDomainEvent));
+            var domainEvent = new SampleCreatedDomainEvent(nameof(SampleCreatedDomainEvent));
 
-            owner.AddDomainEvent(domainEvent);
+            sampleEntity.AddDomainEvent(domainEvent);
 
-            owner.RemoveDomainEvent(domainEvent);
+            sampleEntity.RemoveDomainEvent(domainEvent);
 
-            Assert.AreEqual(0, owner.GetDomainEvents().Count);
+            Assert.AreEqual(0, sampleEntity.GetDomainEvents().Count);
         }
 
         [TestMethod]
         public void Should_Clear_DomainEvents()
         {
-            owner.ChangeDescription(Description.Create(""));
+            sampleEntity.ChangeName(SampleName.Create(""));
 
-            owner.AddDomainEvent(new StubMockDomainEvent(nameof(StubMockDomainEvent)));
+            sampleEntity.AddDomainEvent(new SampleCreatedDomainEvent(nameof(SampleCreatedDomainEvent)));
 
-            owner.ClearDomainEvents();
+            sampleEntity.ClearDomainEvents();
 
-            Assert.AreEqual(0, owner.GetDomainEvents().Count);
+            Assert.AreEqual(0, sampleEntity.GetDomainEvents().Count);
         }
 
         [TestMethod]
         public void Should_Set_Version()
         {
-            owner.ChangeDescription(Description.Create(""));
+            sampleEntity.ChangeName(SampleName.Create(""));
 
-            owner.SetVersion(1);
+            sampleEntity.SetVersion(1);
 
-            Assert.AreEqual(1, owner.Version);
-        }
-
-        [TestMethod]
-        public void Should_Add_Validator()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            owner.AddValidator(new StubEntityRuleValidator<ParentRootEntity>(owner, nameof(StubValueObjectValidator)));
-
-            owner.GetValidators().Count.ShouldBeGreaterThan(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_Validator()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            owner.AddValidator(new StubEntityRuleValidator<ParentRootEntity>(owner, nameof(StubValueObjectValidator)));
-
-            owner.Validate();
-
-            owner.IsValid().ShouldBeFalse();
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            mockValidator.Verify(x => x.AddRules(It.IsAny<RuleContext>()), Times.Once);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_NotValid()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.IsValid().ShouldBeFalse();
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_Valid()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.IsValid().ShouldBeTrue();
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules()[0].Message.ShouldBe("Field Name is required");
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_PropertyName()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules()[0].Property.ShouldBe("FieldName");
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_PropertyName_NotValid()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules()[0].Property.ShouldBe("FieldName");
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_PropertyName_Valid()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBe(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBe(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_NotValid()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid_With_MockValidator()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBe(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_NotValid_With_MockValidator()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid_With_MockValidator_With_BrokenRule()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBe(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_NotValid_With_MockValidator_With_BrokenRule()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid_With_MockValidator_With_BrokenRule_Message()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBe(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_NotValid_With_MockValidator_With_BrokenRule_Message()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid_With_MockValidator_With_BrokenRule_Message_NotValid()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBe(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_NotValid_With_MockValidator_With_BrokenRule_Message_NotValid()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_Valid_With_MockValidator_With_BrokenRule_Message_Valid()
-        {
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>()));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBe(0);
-        }
-
-        [TestMethod]
-        public void Should_Validate_Entity_With_MockValidator_With_BrokenRule_Message_NotValid_With_MockValidator_With_BrokenRule_Message_Valid()
-        {
-            owner.ChangeDescription(Description.Create(""));
-
-            var mockValidator = new Mock<StubEntityRuleValidator<ParentRootEntity>>(owner, nameof(StubValueObjectValidator));
-
-            mockValidator.Setup(x => x.AddRules(It.IsAny<RuleContext>())).Callback(() => owner.AddBrokenRule("FieldName", "Field Name is required"));
-
-            owner.AddValidator(mockValidator.Object);
-
-            owner.Validate();
-
-            owner.GetBrokenRules().Count.ShouldBeGreaterThan(0);
+            Assert.AreEqual(1, sampleEntity.Version);
         }
 
         [TestMethod]
         public void Should_Validate_Entity_Track_IsNew()
         {
-            owner.IsNew.ShouldBeTrue();
+            sampleEntity.IsNew.ShouldBeTrue();
         }
     }
 }

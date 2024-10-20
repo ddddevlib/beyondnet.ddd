@@ -1,6 +1,5 @@
 ﻿using BeyondNet.Ddd.Rules;
-using BeyondNet.Ddd.Test.Stubs;
-using BeyondNet.Ddd.ValueObjects;
+using BeyondNet.Ddd.Test.Entities;
 using Shouldly;
 
 namespace BeyondNet.Ddd.Test
@@ -115,7 +114,7 @@ namespace BeyondNet.Ddd.Test
         public void GetBrokenRules_ReturnsReadOnlyCollection()
         {
             // Arrange
-            var obj = ParentRootEntity.Create(Name.Create(""), Description.Create("foo"));
+            var obj = SampleEntity.Create(SampleName.Create(""));
 
             // Act
             var result = obj.GetBrokenRulesAsString();

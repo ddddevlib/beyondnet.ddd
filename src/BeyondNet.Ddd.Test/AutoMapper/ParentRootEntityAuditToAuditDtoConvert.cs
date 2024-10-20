@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using BeyondNet.Ddd.ValueObjects;
+using BeyondNet.Ddd.Test.Dtos;
+using BeyondNet.Ddd.Test.Entities.ValueObjects;
 
 namespace BeyondNet.Ddd.Test.AutoMapper
 {

@@ -1,4 +1,4 @@
-﻿using BeyondNet.Ddd.Test.Stubs;
+﻿using BeyondNet.Ddd.Test.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -14,79 +14,79 @@ namespace BeyondNet.Ddd.Test
         [TestMethod]
         public void GetAll_ShouldReturnAllValues()
         {
-            var values = Enumeration.GetAll<MockEnumeration>().ToList();
+            var values = Enumeration.GetAll<SampleEntityStatus>().ToList();
             Assert.AreEqual(2, values.Count);
-            Assert.AreEqual(MockEnumeration.First, values[0]);
-            Assert.AreEqual(MockEnumeration.Second, values[1]);
+            Assert.AreEqual(SampleEntityStatus.Active, values[0]);
+            Assert.AreEqual(SampleEntityStatus.Inactive, values[1]);
         }
 
         [TestMethod]
         public void FromValue_ShouldReturnCorrectValue()
         {
-            var value = Enumeration.FromValue<MockEnumeration>(1);
-            Assert.AreEqual(MockEnumeration.First, value);
+            var value = Enumeration.FromValue<SampleEntityStatus>(1);
+            Assert.AreEqual(SampleEntityStatus.Active, value);
         }
 
         [TestMethod]
         public void FromDisplayName_ShouldReturnCorrectValue()
         {
-            var value = Enumeration.FromDisplayName<MockEnumeration>("First");
-            Assert.AreEqual(MockEnumeration.First, value);
+            var value = Enumeration.FromDisplayName<SampleEntityStatus>("Active");
+            Assert.AreEqual(SampleEntityStatus.Active, value);
         }
 
         [TestMethod]
         public void AbsoluteDifference_ShouldReturnCorrectValue()
         {
-            var value = Enumeration.AbsoluteDifference(MockEnumeration.First, MockEnumeration.Second);
+            var value = Enumeration.AbsoluteDifference(SampleEntityStatus.Active, SampleEntityStatus.Inactive);
             Assert.AreEqual(1, value);
         }
 
         [TestMethod]
         public void Equals_ShouldReturnTrue()
         {
-            var value = MockEnumeration.First.Equals(MockEnumeration.First);
+            var value = SampleEntityStatus.Active.Equals(SampleEntityStatus.Active);
             Assert.IsTrue(value);
         }
 
         [TestMethod]
         public void Equals_ShouldReturnFalse()
         {
-            var value = MockEnumeration.First.Equals(MockEnumeration.Second);
+            var value = SampleEntityStatus.Active.Equals(SampleEntityStatus.Inactive);
             Assert.IsFalse(value);
         }
 
         [TestMethod]
         public void GetHashCode_ShouldReturnCorrectValue()
         {
-            var value = MockEnumeration.First.GetHashCode();
+            var value = SampleEntityStatus.Active.GetHashCode();
             Assert.AreEqual(1, value);
         }
 
         [TestMethod]
         public void ToString_ShouldReturnCorrectValue()
         {
-            var value = MockEnumeration.First.ToString();
-            Assert.AreEqual("First", value);
+            var value = SampleEntityStatus.Active.ToString();
+            Assert.AreEqual("Active", value);
         }
 
         [TestMethod]
         public void CompareTo_ShouldReturnCorrectValue()
         {
-            var value = MockEnumeration.First.CompareTo(MockEnumeration.Second);
+            var value = SampleEntityStatus.Active.CompareTo(SampleEntityStatus.Inactive);
             Assert.AreEqual(-1, value);
         }
 
         [TestMethod]
         public void CompareTo_ShouldReturnZero()
         {
-            var value = MockEnumeration.First.CompareTo(MockEnumeration.First);
+            var value = SampleEntityStatus.Active.CompareTo(SampleEntityStatus.Active);
             Assert.AreEqual(0, value);
         }
 
         [TestMethod]
         public void CompareTo_ShouldReturnOne()
         {
-            var value = MockEnumeration.Second.CompareTo(MockEnumeration.First);
+            var value = SampleEntityStatus.Inactive.CompareTo(SampleEntityStatus.Active);
             Assert.AreEqual(1, value);
         }
 
@@ -95,11 +95,11 @@ namespace BeyondNet.Ddd.Test
         {
             try
             {
-                Enumeration.FromValue<MockEnumeration>(3);
+                Enumeration.FromValue<SampleEntityStatus>(3);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("'3' is not a valid value in BeyondNet.Ddd.Test.Stubs.MockEnumeration", ex.Message);
+                Assert.AreEqual("'3' is not a valid value in BeyondNet.Ddd.Test.Entities.SampleEntityStatus", ex.Message);
             }
         }
 
@@ -108,11 +108,11 @@ namespace BeyondNet.Ddd.Test
         {
             try
             {
-                Enumeration.FromDisplayName<MockEnumeration>("Third");
+                Enumeration.FromDisplayName<SampleEntityStatus>("Third");
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("'Third' is not a valid display name in BeyondNet.Ddd.Test.Stubs.MockEnumeration", ex.Message);
+                Assert.AreEqual("'Third' is not a valid display name in BeyondNet.Ddd.Test.Entities.SampleEntityStatus", ex.Message);
             }
         }
 

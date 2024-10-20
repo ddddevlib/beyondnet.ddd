@@ -11,17 +11,7 @@
         /// <param name="value">The string value.</param>
         protected StringValueObject(string value) : base(value)
         {
-        }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="StringValueObject"/> class.
-        /// </summary>
-        /// <param name="value">The string value.</param>
-        /// <returns>The created <see cref="StringValueObject"/> instance.</returns>
-        public static StringValueObject Create(string value)
-        {
-            return new StringValueObject(value);
-        }
+        }      
 
         /// <summary>
         /// Gets the equality components of the string value object.
