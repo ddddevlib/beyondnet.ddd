@@ -1,7 +1,4 @@
-﻿using BeyondNet.Ddd.Interfaces;
-using BeyondNet.Ddd.ValueObjects.Common;
-
-namespace BeyondNet.Ddd.Test.Entities
+﻿namespace BeyondNet.Ddd.Test.Entities
 {
     public class SampleReferenceProps : IProps
     {
