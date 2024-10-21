@@ -25,13 +25,11 @@ namespace BeyondNet.Ddd
         /// <summary>
         /// Initializes a new instance of the <see cref="DomainEvent"/> class.
         /// </summary>
-        protected DomainEvent(string eventName)
+        protected DomainEvent()
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(eventName, nameof(eventName));
-
             EventId = Guid.NewGuid().ToString();
             CreatedAt = DateTime.UtcNow;
-            EventName = eventName;
+            EventName = this.GetType().Name;
         }
     }
 }

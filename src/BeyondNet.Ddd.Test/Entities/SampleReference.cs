@@ -28,10 +28,5 @@
         {
             return new SampleReference(props);
         }
-
-        protected override void ChangeStateDomainEvents(IDomainEvent domainEvent)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
