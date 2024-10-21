@@ -4,15 +4,22 @@ using BeyondNet.Ddd.Services.Impl;
 namespace BeyondNet.Ddd
 {
 
+    /// <summary>
+    /// Represents the base class for aggregate roots in the domain-driven design.
+    /// </summary>
+    /// <typeparam name="TAggegateRoot">The type of the aggregate root.</typeparam>
+    /// <typeparam name="TProps">The type of the properties of the aggregate root.</typeparam>
     public abstract class AggregateRoot<TAggegateRoot, TProps> : Entity<TAggegateRoot, TProps>
                        where TAggegateRoot : class
                        where TProps : class, IProps
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggregateRoot{TAggegateRoot, TProps}"/> class.
+        /// </summary>
+        /// <param name="props">The properties of the aggregate root.</param>
         protected AggregateRoot(TProps props) : base(props)
         {
-
             _domainEvents = new DomainEventsManager();
-
             _version = 0;
         }
 
@@ -36,7 +43,6 @@ namespace BeyondNet.Ddd
             get { return _version; }
             private set { _version = value; }
         }
-
 
         /// <summary>
         /// Sets the version of the entity.
@@ -81,6 +87,10 @@ namespace BeyondNet.Ddd
             Version--;
         }
 
+        /// <summary>
+        /// Loads the domain events associated with the entity.
+        /// </summary>
+        /// <param name="history">The collection of domain events to load.</param>
         public void LoadDomainEvents(IReadOnlyCollection<IDomainEvent> history)
         {
             _domainEvents.LoadDomainEvents(history);
