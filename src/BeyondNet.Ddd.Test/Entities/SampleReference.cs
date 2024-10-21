@@ -31,5 +31,10 @@ namespace BeyondNet.Ddd.Test.Entities
         {
             return new SampleReference(props);
         }
+
+        protected override void ChangeStateDomainEvents(IDomainEvent domainEvent)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -21,6 +21,11 @@ namespace BeyondNet.Ddd.Test.Entities
         public SampleEntityChild(SampleEntityChildProps props) : base(props)
         {
         }
+
+        protected override void ChangeStateDomainEvents(IDomainEvent domainEvent)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class SampleEntityChildStatus : Enumeration

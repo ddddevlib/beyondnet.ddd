@@ -1,17 +1,18 @@
-﻿using BeyondNet.Ddd.Services.Interfaces;
+﻿using BeyondNet.Ddd.Interfaces;
+using BeyondNet.Ddd.Services.Interfaces;
 
 namespace BeyondNet.Ddd.Services.Impl
 {
     public class DomainEventsManager : IDomainEventsManager
     {
-        private List<DomainEvent> _domainEvents = [];
+        private List<IDomainEvent> _domainEvents = [];
 
-        public IReadOnlyCollection<DomainEvent> GetDomainEvents()
+        public IReadOnlyCollection<IDomainEvent> GetDomainEvents()
         {
             return _domainEvents.ToList().AsReadOnly();
         }
 
-        public void AddDomainEvent(DomainEvent eventItem)
+        public void AddDomainEvent(IDomainEvent eventItem)
         {
             if (!_domainEvents.Where(p => p.EventName.ToUpperInvariant().Trim() == eventItem.EventName.ToUpperInvariant().Trim()).Any())
             {
@@ -19,12 +20,23 @@ namespace BeyondNet.Ddd.Services.Impl
             }
         }
 
-        public void RemoveDomainEvent(DomainEvent eventItem)
+        public void RemoveDomainEvent(IDomainEvent eventItem)
         {
             if (_domainEvents.Where(p => p.EventName.ToUpperInvariant().Trim() == eventItem.EventName.ToUpperInvariant().Trim()).Any())
             {
                 _domainEvents?.Remove(eventItem);
             }
+        }
+
+        public void LoadDomainEvents(IReadOnlyCollection<IDomainEvent> history)
+        {
+            if (history == null) return;
+            
+            foreach (var domainEvent in history) {
+                AddDomainEvent(domainEvent);
+            }
+
+            ClearDomainEvents();
         }
 
         public void ClearDomainEvents()

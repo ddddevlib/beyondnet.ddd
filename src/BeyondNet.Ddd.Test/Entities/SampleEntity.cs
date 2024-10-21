@@ -91,6 +91,11 @@
         {
             AddValidator(new SampleEntityValidator(this));
         }
+
+        protected override void ChangeStateDomainEvents(IDomainEvent domainEvent)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class SampleEntityStatus : Enumeration
