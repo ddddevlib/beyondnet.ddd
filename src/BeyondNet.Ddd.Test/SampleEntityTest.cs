@@ -8,7 +8,7 @@
         [TestInitialize]
         public void Setup()
         {
-            sampleEntity = SampleEntity.Create(IdValueObject.Create(), SampleName.Create("foo"), SampleReferenceId.Create(Guid.NewGuid().ToString(),"default"));
+            sampleEntity = SampleEntity.Create(SampleName.Create("foo"), SampleReferenceId.Create(Guid.NewGuid().ToString(),"default"));
         }
 
         [TestCleanup]
@@ -22,7 +22,7 @@
         {
             var id = Guid.NewGuid().ToString();                     
 
-            var other = SampleEntity.Create(IdValueObject.Create(), SampleName.Create("foo"), SampleReferenceId.Create(Guid.NewGuid().ToString(), "default"));
+            var other = SampleEntity.Create(SampleName.Create("foo"), SampleReferenceId.Create(Guid.NewGuid().ToString(), "default"));
 
             sampleEntity.Equals(other).ShouldBeFalse();
         }

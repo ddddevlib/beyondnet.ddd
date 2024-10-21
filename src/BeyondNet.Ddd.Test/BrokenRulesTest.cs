@@ -93,7 +93,7 @@
         public void GetBrokenRules_ReturnsReadOnlyCollection()
         {
             // Arrange
-            var obj = SampleEntity.Create(IdValueObject.Create(), SampleName.Create(""), SampleReferenceId.Create(Guid.NewGuid().ToString(),"XXX"));
+            var obj = SampleEntity.Create(SampleName.Create(""), SampleReferenceId.Create(Guid.NewGuid().ToString(),"XXX"));
 
             // Act
             var result = obj.GetBrokenRules.GetBrokenRulesAsString();

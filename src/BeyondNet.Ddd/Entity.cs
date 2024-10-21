@@ -23,7 +23,17 @@ namespace BeyondNet.Ddd
         private TProps _props;
 
         #endregion
- 
+
+        #region Properties 
+
+        public IdValueObject Id { get; private set; }
+
+        public IdValueObject SetId(string id) { 
+            return IdValueObject.Create(id);
+        }
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -32,7 +42,8 @@ namespace BeyondNet.Ddd
         /// <param name="props">The properties of the entity.</param>
         protected Entity(TProps props)
         {
- 
+            Id = IdValueObject.Create();
+
             _brokenRules = new BrokenRulesManager();
 
             _props = props;

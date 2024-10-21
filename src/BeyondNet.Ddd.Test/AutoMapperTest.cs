@@ -37,7 +37,7 @@
 
             var entityProps = mapper.Map<SampleEntityProps>(dto);
 
-            var entity = SampleEntity.Create(IdValueObject.Create(), entityProps.Name, SampleReferenceId.Create(Guid.NewGuid().ToString(),"Deport"));
+            var entity = SampleEntity.Create(entityProps.Name, SampleReferenceId.Create(Guid.NewGuid().ToString(),"Deport"));
 
             entity.ShouldNotBeNull();
         }

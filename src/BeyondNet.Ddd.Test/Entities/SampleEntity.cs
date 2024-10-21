@@ -2,25 +2,22 @@
 {
     public class SampleEntityProps: IProps
     {
-        public IdValueObject Id { get; private set; } = default!;
         public SampleName Name { get; private set; }
         public SampleReferenceId SampleReferenceId { get; set; }
         public SampleEntityStatus Status { get; set; }
         public AuditValueObject Audit { get; private set; }
 
 
-        public SampleEntityProps(IdValueObject id, SampleName name, SampleReferenceId sampleReferenceId)
+        public SampleEntityProps(SampleName name, SampleReferenceId sampleReferenceId)
         {
-            Id = id;
             Name = name;
             SampleReferenceId = sampleReferenceId;
             Status = SampleEntityStatus.Active;
             Audit = AuditValueObject.Create("default");
         }
 
-        public SampleEntityProps(IdValueObject id, SampleName name, SampleReferenceId sampleReferenceId, SampleEntityStatus status, AuditValueObject audit)
+        public SampleEntityProps(SampleName name, SampleReferenceId sampleReferenceId, SampleEntityStatus status, AuditValueObject audit)
         {
-            Id = id;
             SampleReferenceId = sampleReferenceId;
             Name = name;
             Status = status;
@@ -39,16 +36,20 @@
         {
         }
 
-        public static SampleEntity Create(IdValueObject id, SampleName name, SampleReferenceId sampleReferenceId)
+        public static SampleEntity Create(SampleName name, SampleReferenceId sampleReferenceId)
         {
-            var props = new SampleEntityProps(id, name, sampleReferenceId);
+            var props = new SampleEntityProps(name, sampleReferenceId);
 
             return new SampleEntity(props);
         }
 
-        public static SampleEntity Load(SampleEntityProps props)
+        public static SampleEntity Load(string id, SampleEntityProps props)
         {
-            return new SampleEntity(props);
+            var sampleEntity = new SampleEntity(props);
+            sampleEntity.SetId(id);
+
+            return sampleEntity;
+
         }
 
         public void ChangeSampleReference(SampleReferenceId sampleReferenceId)
