@@ -30,7 +30,7 @@
         }
     }
 
-    public class SampleEntity : Entity<SampleEntity, SampleEntityProps>, IAggregateRoot
+    public class SampleEntity : Entity<SampleEntity, SampleEntityProps>
     {
         private SampleEntity(SampleEntityProps props) : base(props)
         {

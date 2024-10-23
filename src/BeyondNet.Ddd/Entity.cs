@@ -11,9 +11,8 @@ namespace BeyondNet.Ddd
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     /// <typeparam name="TProps">The type of the entity properties.</typeparam>
-    public abstract class Entity<TEntity, TProps> 
-            where TEntity : class 
-            where TProps  : class, IProps
+    public abstract class Entity<TEntity, TProps> : IEntity<TEntity, TProps> where TEntity : class
+            where TProps : class, IProps
     {
         #region Members         
 
@@ -28,7 +27,8 @@ namespace BeyondNet.Ddd
 
         public IdValueObject Id { get; private set; }
 
-        public IdValueObject SetId(string id) { 
+        public IdValueObject SetId(string id)
+        {
             return IdValueObject.Create(id);
         }
 
@@ -51,7 +51,7 @@ namespace BeyondNet.Ddd
             Validate();
 
             Tracking = TrackingManager.MarkNew();
-        }           
+        }
 
         #endregion
 
@@ -261,10 +261,10 @@ namespace BeyondNet.Ddd
         /// <param name="validator">The validator to remove.</param>
         public void RemoveValidator(AbstractRuleValidator<TEntity> validator)
         {
-           _validatorRules.Remove(validator);
+            _validatorRules.Remove(validator);
         }
 
-  
+
 
         #endregion
 
@@ -292,7 +292,7 @@ namespace BeyondNet.Ddd
             if (obj is not Entity<TEntity, TProps> entity)
                 return false;
 
-            var propsId= this.GetType().GetProperty("Id");
+            var propsId = this.GetType().GetProperty("Id");
             var propsOthersId = obj.GetType().GetProperty("Id");
 
             if (propsId == null || propsOthersId == null)
@@ -308,7 +308,7 @@ namespace BeyondNet.Ddd
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode()    
+        public override int GetHashCode()
         {
             return base.GetHashCode();
         }

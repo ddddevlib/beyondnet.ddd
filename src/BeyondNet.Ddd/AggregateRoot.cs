@@ -9,7 +9,7 @@ namespace BeyondNet.Ddd
     /// </summary>
     /// <typeparam name="TAggegateRoot">The type of the aggregate root.</typeparam>
     /// <typeparam name="TProps">The type of the properties of the aggregate root.</typeparam>
-    public abstract class AggregateRoot<TAggegateRoot, TProps> : Entity<TAggegateRoot, TProps>
+    public abstract class AggregateRoot<TAggegateRoot, TProps> : Entity<TAggegateRoot, TProps>, IAggregateRoot 
                        where TAggegateRoot : class
                        where TProps : class, IProps
     {
