@@ -93,7 +93,7 @@ namespace BeyondNet.Ddd.Services.Impl
         /// <param name="domainEvent">The domain event to raise.</param>
         /// <exception cref="ArgumentNullException">Thrown when domainEvent is null.</exception>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1030:Use events where appropriate", Justification = "<Pending>")]
-        protected void RaiseEvent(IDomainEvent domainEvent)
+        public void RaiseEvent(IDomainEvent domainEvent)
         {
             if (domainEvent is null)
             {
@@ -107,7 +107,7 @@ namespace BeyondNet.Ddd.Services.Impl
         /// Applies a domain event.
         /// </summary>
         /// <param name="domainEvent">The domain event to apply.</param>
-        protected void ApplyChange(IDomainEvent domainEvent)
+        public void ApplyChange(IDomainEvent domainEvent)
         {
             ApplyChange(domainEvent, true);
         }
