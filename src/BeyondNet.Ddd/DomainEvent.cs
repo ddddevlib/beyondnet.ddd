@@ -7,7 +7,7 @@ namespace BeyondNet.Ddd
     /// </summary>
     public abstract record DomainEvent : IDomainEvent
     {
-        public int Version { get; private set; }
+        public int Version { get; set; }
         /// <summary>
         /// Gets the unique identifier of the event.
         /// </summary>
