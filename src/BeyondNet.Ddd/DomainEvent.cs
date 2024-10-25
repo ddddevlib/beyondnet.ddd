@@ -7,6 +7,7 @@ namespace BeyondNet.Ddd
     /// </summary>
     public abstract record DomainEvent : IDomainEvent
     {
+        public int Version { get; private set; }
         /// <summary>
         /// Gets the unique identifier of the event.
         /// </summary>
@@ -30,6 +31,7 @@ namespace BeyondNet.Ddd
             EventId = Guid.NewGuid().ToString();
             CreatedAt = DateTime.UtcNow;
             EventName = this.GetType().Name;
+            Version = -1;
         }
     }
 }
