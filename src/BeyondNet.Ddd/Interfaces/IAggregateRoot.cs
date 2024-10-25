@@ -7,8 +7,9 @@ namespace BeyondNet.Ddd.Interfaces
     /// </summary>
     public interface IAggregateRoot
     {
+        public int Version { get; }
         public IdValueObject Id { get; }
-        public DomainEventsManager DomainEvents { get; set; }
+        public DomainEventsManager DomainEvents { get; }
     }
 }
 

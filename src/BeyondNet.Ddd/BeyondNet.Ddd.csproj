@@ -15,8 +15,8 @@
     <NeutralLanguage>en</NeutralLanguage>
     <AnalysisLevel>5.0-all</AnalysisLevel>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<AssemblyVersion>1.10.0</AssemblyVersion>
-	<VersionPrefix>1.10.0</VersionPrefix>
+	<AssemblyVersion>1.11.0</AssemblyVersion>
+	<VersionPrefix>1.11.0</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>

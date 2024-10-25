@@ -13,6 +13,8 @@ namespace BeyondNet.Ddd
                        where TAggegateRoot : class
                        where TProps : class, IProps
     {
+        public int Version { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateRoot{TAggegateRoot, TProps}"/> class.
         /// </summary>
