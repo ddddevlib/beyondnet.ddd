@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<AssemblyVersion>1.1.0</AssemblyVersion>
-	<VersionPrefix>1.1.0</VersionPrefix>
+	<AssemblyVersion>1.2.0</AssemblyVersion>
+	<VersionPrefix>1.2.0</VersionPrefix>
 	<Title>BeyondNet.Ddd.ValueObjects</Title>
 	<Copyright>BeyondNet</Copyright>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
