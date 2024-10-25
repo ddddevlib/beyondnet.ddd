@@ -68,7 +68,7 @@
         {
             if (GetPropsCopy().Status == SampleEntityStatus.Inactive)
             {
-                AddBrokenRule("Status", "The entity is already inactive");
+                BrokenRules.Add(new BrokenRule("Status", "The entity is already inactive"));
                 return;
             }
 
@@ -80,7 +80,7 @@
         {
             if (GetPropsCopy().Status == SampleEntityStatus.Active)
             {
-                AddBrokenRule("Status", "The entity is already active");
+                BrokenRules.Add(new BrokenRule("Status", "The entity is already active"));
                 return;
             }
 
@@ -90,7 +90,7 @@
 
         public override void AddValidators()
         {
-            AddValidator(new SampleEntityValidator(this));
+            ValidatorRules.Add(new SampleEntityValidator(this));
         }
     }
 

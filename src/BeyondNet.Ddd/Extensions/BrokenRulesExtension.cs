@@ -1,76 +1,11 @@
 ﻿using BeyondNet.Ddd.Helpers;
-using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.Rules;
 
 namespace BeyondNet.Ddd.Extensions
 {
     public static class BrokenRulesExtension
     {
-        private const string BrokenRulesKeyFunctionName = "GetBrokenRules";
-
-        /// <summary>
-        /// Gets the broken rules for the properties of the specified entity.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <typeparam name="TProps">The type of the properties.</typeparam>
-        /// <param name="entity">The entity.</param>
-        /// <param name="properties">The properties to check for broken rules.</param>
-        /// <returns>A read-only collection of broken rules.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="entity"/> or <paramref name="properties"/> is null.</exception>
-        public static ReadOnlyCollection<BrokenRule> GetPropertiesBrokenRules<TEntity, TProps>(this Entity<TEntity, TProps> entity,
-                                                                                               PropertyInfo[] properties)
-            where TEntity : Entity<TEntity, TProps>
-            where TProps : class, IProps
-        {
-            if (entity is null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            if (properties is null)
-            {
-                throw new ArgumentNullException(nameof(properties));
-            }
-
-            var result = new List<BrokenRule>();
-
-            foreach (var property in properties)
-            {
-                var isValueObject = ReflectionHelper.IsSubclassOfRawGeneric(typeof(ValueObject<>), property.PropertyType);
-
-                if (isValueObject)
-                {
-                    var method = property.PropertyType.GetMethod(BrokenRulesKeyFunctionName);
-
-                    if (method != null)
-                    {
-                        var valueObject = property.GetValue(entity);
-
-                        if (valueObject == null)
-                        {
-                            continue;
-                        }
-
-                        var brokenRules = (ReadOnlyCollection<BrokenRule>)method.Invoke(valueObject, null)!;
-
-                        if (brokenRules.Any())
-                        {
-                            foreach (var brokenRule in brokenRules)
-                            {
-                                var isDuplicated = result.Any(x => x.Property.ToUpperInvariant() == brokenRule.Property.ToUpperInvariant()
-                                                                && x.Message.ToUpperInvariant() == brokenRule.Message.ToUpperInvariant());
-                                if (!isDuplicated)
-                                {
-                                    result.Add(brokenRule);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return result.AsReadOnly();
-        }
+        private const string BrokenRulesPropertyName = "BrokenRules";
 
         /// <summary>
         /// Gets the broken rules for the properties of the specified entity instance.
@@ -83,34 +18,40 @@ namespace BeyondNet.Ddd.Extensions
         public static ReadOnlyCollection<BrokenRule> GetPropertiesBrokenRules<TEntity>(this PropertyInfo[] properties,
                                                                                        TEntity instance)
         {
+            if( instance is null )
+                throw new ArgumentNullException(nameof(instance));
+
             if (properties is null)
-            {
                 throw new ArgumentNullException(nameof(properties));
-            }
+
 
             var result = new List<BrokenRule>();
 
             foreach (var property in properties)
             {
                 var isValueObject = ReflectionHelper.IsSubclassOfRawGeneric(typeof(ValueObject<>), property.PropertyType);
+
                 if (isValueObject)
                 {
-                    var method = property.PropertyType.GetMethod(BrokenRulesKeyFunctionName);
-                    if (method != null)
+                    var brokenRulesProperty = property.GetValue(instance)?.GetType().GetProperty(BrokenRulesPropertyName);    
+
+                    if (brokenRulesProperty is null)
                     {
-                        var valueObject = property.GetValue(instance);
+                        continue;
+                    }
 
-                        if (valueObject == null)
-                        {
-                            continue;
-                        }
+                    var valueObject = property.GetValue(instance);
 
-                        var brokenRules = (ReadOnlyCollection<BrokenRule>)method.Invoke(valueObject, null)!;
+                    if (valueObject is null)
+                    {
+                        continue;
+                    }
 
-                        if (brokenRules.Any())
-                        {
-                            result.AddRange(brokenRules);
-                        }
+                    var brokenRuleProperty = (BrokenRulesManager)brokenRulesProperty.GetValue(valueObject)!;
+
+                    if (brokenRuleProperty.GetBrokenRules().Any())
+                    {
+                        result.AddRange(brokenRuleProperty.GetBrokenRules());
                     }
                 }
             }

@@ -2,14 +2,14 @@
 {
     public record SampleCreatedDomainEvent : DomainEvent
     {
-        public SampleCreatedDomainEvent(string aggregateRootId, string name, DateTime Started) 
+        public SampleCreatedDomainEvent(Guid aggregateRootId, string name, DateTime Started) 
         {
             AggregateRootId = aggregateRootId;
             Name = name;
             this.Started = Started;
         }
 
-        public string AggregateRootId { get; }
+        public Guid AggregateRootId { get; }
         public string Name { get; }
         public DateTime Started { get; }
     }

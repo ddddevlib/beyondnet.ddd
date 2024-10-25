@@ -21,6 +21,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+    <None Include="..\BeyondNet.Ddd\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>

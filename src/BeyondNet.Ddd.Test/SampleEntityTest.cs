@@ -44,7 +44,7 @@
         [TestMethod]
         public void Should_Validate_Entity_Track_IsNew()
         {
-            sampleEntity.IsNew.ShouldBeTrue();
+            sampleEntity.TrackingState.IsNew.ShouldBeTrue();
         }
     }
 }

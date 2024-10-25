@@ -22,9 +22,7 @@ namespace BeyondNet.Ddd.Test.Entities
         {
             base.AddValidators();
 
-            var validator = new SampleNameValidator(this);
-
-            AddValidator(validator);
+            ValidatorRules.Add(new SampleNameValidator(this));
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

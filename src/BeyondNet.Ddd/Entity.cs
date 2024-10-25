@@ -29,8 +29,14 @@ namespace BeyondNet.Ddd
 
         public IdValueObject SetId(string id)
         {
-            return IdValueObject.Create(id);
+            return Id.Load(id);
         }
+
+        public BrokenRulesManager BrokenRules { get;  }
+
+        public TrackingStateManager TrackingState { get; }
+
+        public ValidatorRuleManager<AbstractRuleValidator<TEntity>> ValidatorRules { get; }
 
         #endregion
 
@@ -42,15 +48,19 @@ namespace BeyondNet.Ddd
         /// <param name="props">The properties of the entity.</param>
         protected Entity(TProps props)
         {
-            Id = IdValueObject.Create();
+            BrokenRules = new BrokenRulesManager();
 
-            _brokenRules = new BrokenRulesManager();
+            TrackingState = new TrackingStateManager();
+
+            ValidatorRules = new ValidatorRuleManager<AbstractRuleValidator<TEntity>>();
+
+            Id = IdValueObject.Create();
 
             _props = props;
 
             Validate();
 
-            Tracking = TrackingManager.MarkNew();
+            TrackingState.MarkAsNew();
         }
 
         #endregion
@@ -84,119 +94,12 @@ namespace BeyondNet.Ddd
         {
             _props = props;
 
-            Tracking = TrackingManager.MarkDirty();
+            TrackingState.MarkAsDirty();
         }
 
         #endregion
 
-        #region Tracking     
-
-        public virtual void SelfDelete()
-        {
-            MarkSelfDeleted();
-        }
-
-        public virtual void Delete()
-        {
-            MarkDelete();
-        }
-
-        /// <summary>
-        /// Marks the entity as dirty.
-        /// </summary>
-        public void MarkDirty()
-        {
-            Tracking = TrackingManager.MarkDirty();
-        }
-
-        /// <summary>
-        /// Marks the entity as new.
-        /// </summary>
-        public void MarkNew()
-        {
-            Tracking = TrackingManager.MarkNew();
-        }
-
-        /// <summary>
-        /// Marks the entity as self deleted.
-        /// </summary>
-        public void MarkSelfDeleted()
-        {
-            Tracking = TrackingManager.MarkSelfDeleted();
-        }
-
-        /// <summary>
-        /// Marks the entity as deleted.
-        /// </summary>
-        public void MarkDelete()
-        {
-            Tracking = TrackingManager.MarkDeleted();
-        }
-
-        /// <summary>
-        /// Gets or sets the tracking state of the entity.
-        /// </summary>
-        public TrackingManager Tracking { get; private set; } = TrackingManager.MarkClean();
-
-        /// <summary>
-        /// Gets a value indicating whether the entity is new.
-        /// </summary>
-        public bool IsNew => Tracking.IsNew;
-
-        /// <summary>
-        /// Gets a value indicating whether the entity is dirty.
-        /// </summary>
-        public bool IsDirty => Tracking.IsDirty;
-
-        /// <summary>
-        /// Gets a value indicating whether the entity is self deleted.
-        /// </summary>
-        public bool IsSelftDeleted => Tracking.IsSelftDeleted;
-
-        /// <summary>
-        /// Gets a value indicating whether the entity is deleted.
-        /// </summary>
-        public bool IsDeleted => Tracking.IsDeleted;
-
-        #endregion  
-
-        #region BrokenRules
-
-        /// <summary>
-        /// The broken rules of the entity.
-        /// </summary>
-        private BrokenRulesManager _brokenRules = new();
-
-        /// <summary>
-        /// Gets the broken rules of the entity.
-        /// </summary>
-        /// <returns>The broken rules of the entity.</returns>
-        public BrokenRulesManager GetBrokenRules => _brokenRules;
-
-        /// <summary>
-        /// Adds a broken rule to the entity.
-        /// </summary>
-        /// <param name="propertyName">The name of the property with the broken rule.</param>
-        /// <param name="message">The message of the broken rule.</param>
-        public void AddBrokenRule(string propertyName, string message)
-        {
-            var brokenRule = new BrokenRule(propertyName, message);
-            _brokenRules.Add(brokenRule);
-        }
-
-        #endregion
-
-        #region ValidatorRules
-
-        /// <summary>
-        /// Gets the validator rules for the entity.
-        /// </summary>
-        public ReadOnlyCollection<AbstractRuleValidator<TEntity>> GetValidators() => _validatorRules.GetValidators().AsReadOnly();
-
-        /// <summary>
-        /// The validator rules for the entity.
-        /// </summary>
-        private ValidatorRuleManager<AbstractRuleValidator<TEntity>> _validatorRules = new();
+        #region BusinessRules
 
         /// <summary>
         /// Gets a value indicating whether the entity is valid.
@@ -206,7 +109,7 @@ namespace BeyondNet.Ddd
         {
             Validate();
 
-            return !_brokenRules.GetBrokenRules().Any();
+            return !BrokenRules.GetBrokenRules().Any();
         }
 
         /// <summary>
@@ -214,18 +117,28 @@ namespace BeyondNet.Ddd
         /// </summary>
         public void Validate()
         {
+            // Add validators for Entity
             AddValidators();
 
-            _brokenRules.Add(_validatorRules.GetBrokenRules().ToList());
+            // Get broken rules for Entity
+            BrokenRules.Add(ValidatorRules.GetBrokenRules().ToList());
 
+            if (BrokenRules.GetBrokenRules().Any())
+            {
+                TrackingState.MarkAsDirty();
+                return;
+            }
+
+            // Explore broken rules for properties
             var props = GetPropsCopy().GetType().GetProperties();
 
             var propsBrokenRules = props.GetPropertiesBrokenRules(_props);
 
             if (propsBrokenRules.Any())
             {
-                _brokenRules.Add(propsBrokenRules);
-                MarkDirty();
+                BrokenRules.Add(propsBrokenRules);
+
+                TrackingState.MarkAsDirty();
             }
         }
 
@@ -236,35 +149,6 @@ namespace BeyondNet.Ddd
         {
 
         }
-
-        /// <summary>
-        /// Adds a validator for the entity.
-        /// </summary>
-        /// <param name="validator">The validator to add.</param>
-        public void AddValidator(AbstractRuleValidator<TEntity> validator)
-        {
-            _validatorRules.Add(validator);
-        }
-
-        /// <summary>
-        /// Adds multiple validators for the entity.
-        /// </summary>
-        /// <param name="validators">The validators to add.</param>
-        public void AddValidators(ICollection<AbstractRuleValidator<TEntity>> validators)
-        {
-            _validatorRules.Add(validators);
-        }
-
-        /// <summary>
-        /// Removes a validator from the entity.
-        /// </summary>
-        /// <param name="validator">The validator to remove.</param>
-        public void RemoveValidator(AbstractRuleValidator<TEntity> validator)
-        {
-            _validatorRules.Remove(validator);
-        }
-
-
 
         #endregion
 

@@ -33,7 +33,7 @@ namespace BeyondNet.Ddd.Test.Entities
         {
             base.AddValidators();
 
-            AddValidator(new SampleReferenceIdValidator(this));
+            ValidatorRules.Add(new SampleReferenceIdValidator(this));
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

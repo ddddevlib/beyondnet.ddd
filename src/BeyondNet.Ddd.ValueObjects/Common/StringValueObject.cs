@@ -28,7 +28,7 @@ namespace BeyondNet.Ddd.ValueObjects.Common
         {
             base.AddValidators();
 
-            AddValidator(new StringNotNullValidator(this));
+            ValidatorRules.Add(new StringNotNullValidator(this));
         }
 
         /// <summary>

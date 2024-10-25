@@ -1,11 +1,13 @@
-﻿namespace BeyondNet.Ddd
+﻿using BeyondNet.Ddd.Rules;
+
+namespace BeyondNet.Ddd
 {
     /// <summary>
     /// Represents an identifier value object.
     /// </summary>
-    public class IdValueObject : ValueObject<string>
+    public class IdValueObject : ValueObject<Guid>
     {
-        protected IdValueObject(string value) : base(value)
+        protected IdValueObject(Guid value) : base(value)
         {
 
         }
@@ -16,7 +18,7 @@
         /// <returns>The newly created IdValueObject.</returns>
         public static IdValueObject Create()
         {
-            return new IdValueObject(Guid.NewGuid().ToString());
+            return new IdValueObject(Guid.NewGuid());
         }
 
         /// <summary>
@@ -24,9 +26,19 @@
         /// </summary>
         /// <param name="value">The identifier value.</param>
         /// <returns>The newly created IdValueObject.</returns>
-        public static IdValueObject Create(string value)
+        public IdValueObject Load(string value)
         {
-            return new IdValueObject(Guid.Parse(value).ToString());
+            Guid guid = Guid.Empty;
+
+            var isGuidValid = Guid.TryParse(value, out guid);
+
+            if (!isGuidValid)
+            {
+                BrokenRules.Add(new BrokenRule("IdValueObject", $"Value: {value} has invalid format."));
+                return new IdValueObject(guid);
+            }
+
+            return new IdValueObject(Guid.Parse(value));
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
@@ -37,11 +49,6 @@
         /// <summary>
         /// Gets the default value of the IdValueObject, which is an empty identifier value.
         /// </summary>
-        public static IdValueObject DefaultValue => new IdValueObject(Guid.Empty.ToString());
-
-        public static implicit operator IdValueObject(string value)
-        {
-            return new IdValueObject(value);
-        }
+        public static IdValueObject DefaultValue => new IdValueObject(Guid.Empty);
     }
 }

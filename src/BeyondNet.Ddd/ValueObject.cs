@@ -14,13 +14,13 @@ namespace BeyondNet.Ddd
     {
         #region Members
 
-        public TrackingManager Tracking { get; private set; }
+        public TrackingStateManager TrackingState { get; private set; }
 
-        private ValidatorRuleManager<AbstractRuleValidator<ValueObject<TValue>>> _validatorRules = new();
+        public ValidatorRuleManager<AbstractRuleValidator<ValueObject<TValue>>> ValidatorRules { get; private set; }
 
-        private BrokenRulesManager _brokenRules = new BrokenRulesManager();
+        public BrokenRulesManager BrokenRules { get; private set; }
 
-        public bool IsValid => !_brokenRules.GetBrokenRules().Any();
+        public bool IsValid => !BrokenRules.GetBrokenRules().Any();
 
         #endregion
 
@@ -49,14 +49,19 @@ namespace BeyondNet.Ddd
         {
             ArgumentNullException.ThrowIfNull(value, nameof(value));
 
+            BrokenRules = new BrokenRulesManager();
+
+            ValidatorRules = new ValidatorRuleManager<AbstractRuleValidator<ValueObject<TValue>>>();
+
+            TrackingState = new TrackingStateManager();
+
             RegisterProperty(nameof(Value), typeof(TValue), value, ValuePropertyChanged);
 
-            Tracking = TrackingManager.MarkNew();
+            TrackingState.MarkAsNew();
 
 #pragma warning disable CA2214 // Do not call overridable methods in constructors
             AddValidators();
 #pragma warning restore CA2214 // Do not call overridable methods in constructors
-
             Validate();
         }
 
@@ -66,7 +71,7 @@ namespace BeyondNet.Ddd
 
         private void ValuePropertyChanged(AbstractNotifyPropertyChanged sender, NotifyPropertyChangedContextArgs e)
         {
-            Tracking = TrackingManager.MarkDirty();
+            TrackingState.MarkAsDirty();
 
             Validate();
         }
@@ -97,30 +102,9 @@ namespace BeyondNet.Ddd
 
         private void Validate()
         {
-            _brokenRules.Clear();
+            //BrokenRules.Clear();
 
-            _brokenRules.Add(_validatorRules.GetBrokenRules());
-        }
-
-        public void AddValidator(AbstractRuleValidator<ValueObject<TValue>> validator)
-        {
-            _validatorRules.Add(validator);
-        }
-
-        public void AddValidators(ICollection<AbstractRuleValidator<ValueObject<TValue>>> validators)
-        {
-            _validatorRules.Add(validators);
-        }
-
-        public void RemoveValidator(AbstractRuleValidator<ValueObject<TValue>> validator)
-        {
-            _validatorRules.Remove(validator);
-        }
-
-
-        public IReadOnlyCollection<BrokenRule> GetBrokenRules()
-        {
-            return this._brokenRules.GetBrokenRules();
+            BrokenRules.Add(ValidatorRules.GetBrokenRules());
         }
 
         #endregion

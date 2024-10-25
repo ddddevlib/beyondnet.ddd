@@ -17,21 +17,22 @@
         {
             var id = Guid.NewGuid().ToString(); 
 
-            var fieldName1 = IdValueObject.Create(id);
-            var fieldName2 = IdValueObject.Create(id);
+            var Id1 = IdValueObject.Create();
+            var Id2 = IdValueObject.Create();
 
-            fieldName1.Equals(fieldName2).ShouldBeTrue();
+            Id1.SetValue(Id1.Load(id).GetValue());
+            Id2.SetValue(Id2.Load(id).GetValue());
+
+            Id1.Equals(Id2).ShouldBeTrue();
         }
 
         [TestMethod]
         public void Should_Be_not_Equals()
         {
-            var id = Guid.NewGuid().ToString();
+            var Id1 = IdValueObject.Create();
+            var Id2 = IdValueObject.Create();
 
-            var fieldName1 = IdValueObject.Create(id);
-            var fieldName2 = IdValueObject.Create(Guid.NewGuid().ToString());
-
-            fieldName1.Equals(fieldName2).ShouldBeFalse();
+            Id1.Equals(Id2).ShouldBeFalse();
         }
 
         [TestMethod]

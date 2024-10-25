@@ -1,7 +1,4 @@
-﻿using BeyondNet.Ddd.Rules;
-using BeyondNet.Ddd.Rules.Impl;
-
-namespace BeyondNet.Ddd.Test.Entities
+﻿namespace BeyondNet.Ddd.Test.Entities
 {
     public class SampleNameValidator : AbstractRuleValidator<ValueObject<string>>
     {

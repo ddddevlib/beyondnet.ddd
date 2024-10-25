@@ -32,9 +32,9 @@
     {
         private SampleAggregateRoot(SampleAggregateRootProps props) : base(props)
         {
-            if (IsNew)
+            if (TrackingState.IsNew)
             {
-                AddDomainEvent(new SampleCreatedDomainEvent(props.Id.GetValue(), props.Name.GetValue(), props.Audit.GetValue().CreatedAt));
+                DomainEvents.ApplyChange(new SampleCreatedDomainEvent(props.Id.GetValue(), props.Name.GetValue(), props.Audit.GetValue().CreatedAt), true);
             }
         }
 

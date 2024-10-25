@@ -1,4 +1,6 @@
-﻿namespace BeyondNet.Ddd.Test
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace BeyondNet.Ddd.Test
 {
     [TestClass]
     public class BrokenRulesTest
@@ -90,16 +92,27 @@
         }
 
         [TestMethod]
-        public void GetBrokenRules_ReturnsReadOnlyCollection()
+        public void Entity_Should_Has_BrokenRules()
         {
-            // Arrange
-            var obj = SampleEntity.Create(SampleName.Create(""), SampleReferenceId.Create(Guid.NewGuid().ToString(),"XXX"));
+            var sampleEntity = SampleEntity.Create(SampleName.Create("Default"), SampleReferenceId.Create(Guid.NewGuid().ToString(),"XXX"));
 
-            // Act
-            var result = obj.GetBrokenRules.GetBrokenRulesAsString();
+            sampleEntity.IsValid().ShouldBeFalse();
+        }
 
-            // Assert
-            result!.Length.ShouldBeGreaterThan(0);
+        [TestMethod]
+        public void Entity_Should_Has_BrokenRules_In_Properties()
+        {
+            var sampleEntity = SampleEntity.Create(SampleName.Create("foo"), SampleReferenceId.Create(Guid.NewGuid().ToString(), "XXX"));
+
+            sampleEntity.IsValid().ShouldBeFalse();
+        }
+
+        [TestMethod]
+        public void Entity_Should_Not_Have_BrokenRules()
+        {
+            var sampleEntity = SampleEntity.Create(SampleName.Create("BeyondNet"), SampleReferenceId.Create(Guid.NewGuid().ToString(), "XXX"));
+
+            sampleEntity.IsValid().ShouldBeTrue();
         }
     }
 }
