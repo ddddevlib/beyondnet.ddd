@@ -49,6 +49,10 @@ namespace BeyondNet.Ddd
         {
             ArgumentNullException.ThrowIfNull(value, nameof(value));
 
+            /*
+             * TODO: Enhance this logic using Inversion of Control (IoC) without injecting dependencies directly in the constructor. 
+             * We also need to abstract the creation of dependency instances to support multiple IoC containers.
+            */
             BrokenRules = new BrokenRulesManager();
 
             ValidatorRules = new ValidatorRuleManager<AbstractRuleValidator<ValueObject<TValue>>>();

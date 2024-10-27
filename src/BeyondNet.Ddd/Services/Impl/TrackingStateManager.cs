@@ -30,6 +30,11 @@ namespace BeyondNet.Ddd.Services.Impl
         /// </summary>
         public bool IsDeleted { get; private set; }
 
+        public TrackingStateManager()
+        {
+            MarkAsClean();
+        }
+
         /// <summary>
         /// Gets the tracking object for the specified properties.
         /// </summary>
