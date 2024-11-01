@@ -117,6 +117,8 @@ namespace BeyondNet.Ddd
         /// </summary>
         public void Validate()
         {
+            Guard();
+
             // Add validators for Entity
             AddValidators();
 
@@ -140,6 +142,12 @@ namespace BeyondNet.Ddd
 
                 TrackingState.MarkAsDirty();
             }
+        }
+
+        private void Guard()
+        {              
+            if (!(this is TEntity))
+                throw new InvalidOperationException($"Entity '{GetType().Print()}' specifies '{typeof(TEntity).Print()}' as generic argument, it should be its own type");
         }
 
         /// <summary>

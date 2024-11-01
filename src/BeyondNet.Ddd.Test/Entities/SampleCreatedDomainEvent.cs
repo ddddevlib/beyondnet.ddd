@@ -1,16 +1,17 @@
-﻿namespace BeyondNet.Ddd.Test.Entities
+﻿using System.Text.Json;
+
+namespace BeyondNet.Ddd.Test.Entities
 {
     public record SampleCreatedDomainEvent : DomainEvent
     {
-        public SampleCreatedDomainEvent(Guid aggregateRootId, string name, DateTime Started) 
+        public Guid SampleEntityId { get; init; } = default!;
+        public string Name { get; init; } = default!;
+
+        public SampleCreatedDomainEvent(Guid sampleEntityId, string name)
         {
-            AggregateRootId = aggregateRootId;
+            SampleEntityId = sampleEntityId;
             Name = name;
-            this.Started = Started;
         }
 
-        public Guid AggregateRootId { get; }
-        public string Name { get; }
-        public DateTime Started { get; }
     }
 }

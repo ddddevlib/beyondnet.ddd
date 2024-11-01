@@ -34,7 +34,7 @@
         {
             if (TrackingState.IsNew)
             {
-                DomainEvents.ApplyChange(new SampleCreatedDomainEvent(props.Id.GetValue(), props.Name.GetValue(), props.Audit.GetValue().CreatedAt), true);
+                DomainEvents.ApplyChange(new SampleCreatedDomainEvent(props.Id.GetValue(), props.Name.GetValue()), true);
             }
         }
 

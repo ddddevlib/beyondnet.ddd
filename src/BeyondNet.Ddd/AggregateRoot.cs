@@ -21,7 +21,7 @@ namespace BeyondNet.Ddd
         /// <param name="props">The properties of the aggregate root.</param>
         protected AggregateRoot(TProps props) : base(props)
         {
-            DomainEvents = new DomainEventsManager();
+            DomainEvents = new DomainEventsManager(this);
         }
 
         #region DomainEvents    
