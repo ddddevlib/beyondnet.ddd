@@ -7,8 +7,19 @@ namespace BeyondNet.Ddd.Interfaces
     /// </summary>
     public interface IAggregateRoot
     {
+        /// <summary>
+        /// Gets or sets the version of the aggregate root.
+        /// </summary>
         public int Version { get; set; }
+
+        /// <summary>
+        /// Gets the unique identifier of the aggregate root.
+        /// </summary>
         public IdValueObject Id { get; }
+
+        /// <summary>
+        /// Gets the domain events manager associated with the aggregate root.
+        /// </summary>
         public DomainEventsManager DomainEvents { get; }
     }
 }

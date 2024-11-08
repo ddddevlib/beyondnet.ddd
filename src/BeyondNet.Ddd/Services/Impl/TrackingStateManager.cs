@@ -117,10 +117,7 @@ namespace BeyondNet.Ddd.Services.Impl
         {
             MarkAsClean();
 
-            if (props == null)
-            {
-                throw new ArgumentNullException(nameof(props));
-            }
+            ArgumentNullException.ThrowIfNull(props, nameof(props));
 
             foreach (var prop in props.GetType().GetProperties())
             {
@@ -134,10 +131,10 @@ namespace BeyondNet.Ddd.Services.Impl
                 {
                     var trackingValue = (TrackingStateManager)trackingProperty.GetValue(value)!;
 
-                    if (IsDirty) MarkAsDirty();
-                    if (IsNew) MarkAsNew();
-                    if (IsSelftDeleted) MarkAsSelfDeleted();
-                    if (IsDeleted) MarkAsDeleted();
+                    if (trackingValue.IsDirty) MarkAsDirty();
+                    if (trackingValue.IsNew) MarkAsNew();
+                    if (trackingValue.IsSelftDeleted) MarkAsSelfDeleted();
+                    if (trackingValue.IsDeleted) MarkAsDeleted();
                 }
             }
 

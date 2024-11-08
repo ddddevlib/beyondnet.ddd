@@ -1,5 +1,4 @@
 ﻿using BeyondNet.Ddd.Interfaces;
-using BeyondNet.Ddd.Rules;
 using BeyondNet.Ddd.Rules.Impl;
 using BeyondNet.Ddd.Rules.PropertyChange;
 using BeyondNet.Ddd.Services.Impl;

@@ -1,6 +1,7 @@
-﻿using BeyondNet.Ddd.Rules.Interfaces;
+﻿using BeyondNet.Ddd.Rules;
+using BeyondNet.Ddd.Rules.Interfaces;
 
-namespace BeyondNet.Ddd.Rules.Impl
+namespace BeyondNet.Ddd.Services.Impl
 {
     /// <summary>
     /// Represents a collection of validator rules for a specific type.

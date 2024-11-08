@@ -1,7 +1,7 @@
 ﻿using BeyondNet.Ddd.Helpers;
-using BeyondNet.Ddd.Rules;
+using BeyondNet.Ddd.Services.Impl;
 
-namespace BeyondNet.Ddd.Extensions
+namespace BeyondNet.Ddd.Rules
 {
     public static class BrokenRulesExtension
     {
@@ -16,43 +16,43 @@ namespace BeyondNet.Ddd.Extensions
         /// <returns>A read-only collection of broken rules.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="properties"/> is null.</exception>
         public static ReadOnlyCollection<BrokenRule> GetPropertiesBrokenRules<TEntity>(this PropertyInfo[] properties,
-                                                                                       TEntity instance)
+                                                                               TEntity instance)
         {
-            if( instance is null )
+            if (instance is null)
                 throw new ArgumentNullException(nameof(instance));
 
             if (properties is null)
                 throw new ArgumentNullException(nameof(properties));
 
-
             var result = new List<BrokenRule>();
 
             foreach (var property in properties)
             {
-                var isValueObject = ReflectionHelper.IsSubclassOfRawGeneric(typeof(ValueObject<>), property.PropertyType);
-
-                if (isValueObject)
+                if (!ReflectionHelper.IsSubclassOfRawGeneric(typeof(ValueObject<>), property.PropertyType))
                 {
-                    var brokenRulesProperty = property.GetValue(instance)?.GetType().GetProperty(BrokenRulesPropertyName);    
+                    continue;
+                }
 
-                    if (brokenRulesProperty is null)
-                    {
-                        continue;
-                    }
+                var valueObject = property.GetValue(instance);
+                
+                if (valueObject is null)
+                {
+                    continue;
+                }
 
-                    var valueObject = property.GetValue(instance);
+                var brokenRulesProperty = valueObject.GetType().GetProperty(BrokenRulesPropertyName);
+                
+                if (brokenRulesProperty is null)
+                {
+                    continue;
+                }
 
-                    if (valueObject is null)
-                    {
-                        continue;
-                    }
-
-                    var brokenRuleProperty = (BrokenRulesManager)brokenRulesProperty.GetValue(valueObject)!;
-
-                    if (brokenRuleProperty.GetBrokenRules().Any())
-                    {
-                        result.AddRange(brokenRuleProperty.GetBrokenRules());
-                    }
+                var brokenRuleProperty = (BrokenRulesManager)brokenRulesProperty.GetValue(valueObject)!;
+                var brokenRules = brokenRuleProperty.GetBrokenRules();
+                
+                if (brokenRules.Count > 0)
+                {
+                    result.AddRange(brokenRules);
                 }
             }
 

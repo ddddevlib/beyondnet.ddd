@@ -21,21 +21,16 @@
 
             var type = entity.GetType();
 
-            var domainEvents = type.GetProperty(KeyNameDomainEvents)?.GetValue(entity) as IEnumerable;
-
-            if (domainEvents != null)
+            if (type.GetProperty(KeyNameDomainEvents)?.GetValue(entity) is IEnumerable domainEvents)
             {
+                var publishTasks = new List<Task>();
                 foreach (var domainEvent in domainEvents)
                 {
-                    await mediator.Publish(domainEvent).ConfigureAwait(false);
+                    publishTasks.Add(mediator.Publish(domainEvent));
                 }
+                await Task.WhenAll(publishTasks).ConfigureAwait(false);
 
-                var clearDomainEvents = type.GetMethod(KeyNameClearDomainEvents);
-
-                if (clearDomainEvents != null)
-                {
-                    clearDomainEvents.Invoke(entity, null);
-                }
+                type.GetMethod(KeyNameClearDomainEvents)?.Invoke(entity, null);
             }
         }
     }

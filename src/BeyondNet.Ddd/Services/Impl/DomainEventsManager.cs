@@ -1,5 +1,4 @@
 ﻿using BeyondNet.Ddd.Interfaces;
-using System.Reflection;
 
 namespace BeyondNet.Ddd.Services.Impl
 {
@@ -13,7 +12,7 @@ namespace BeyondNet.Ddd.Services.Impl
         /// </summary>
         public IAggregateRoot AggregateRoot { get; }
 
-        private readonly List<IDomainEvent> _domainEvents;
+        private readonly List<IDomainEvent> _domainEvents = new();
 
         /// <summary>
         /// Gets or sets the version of the domain events manager.
@@ -27,7 +26,6 @@ namespace BeyondNet.Ddd.Services.Impl
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="aggregateRoot"/> is null.</exception>
         public DomainEventsManager(IAggregateRoot aggregateRoot)
         {
-            _domainEvents = new List<IDomainEvent>();
             AggregateRoot = aggregateRoot ?? throw new ArgumentNullException(nameof(aggregateRoot));
             Version = -1;
         }
@@ -68,8 +66,7 @@ namespace BeyondNet.Ddd.Services.Impl
         /// <exception cref="InvalidOperationException">Thrown when the Apply method is missing for the domain event type.</exception>
         public void ApplyChange(IDomainEvent domainEvent, bool isNew)
         {
-            if (domainEvent is null)
-                throw new ArgumentNullException(nameof(domainEvent));
+            ArgumentNullException.ThrowIfNull(domainEvent, nameof(domainEvent));    
 
             var method = GetType().GetMethod("Apply", BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { domainEvent.GetType() }, null);
 
@@ -92,14 +89,15 @@ namespace BeyondNet.Ddd.Services.Impl
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1030:Use events where appropriate", Justification = "<Pending>")]
         public void RaiseEvent(IDomainEvent domainEvent)
         {
-            if (domainEvent is null)
-                throw new ArgumentNullException(nameof(domainEvent));
+            ArgumentNullException.ThrowIfNull(domainEvent, nameof(domainEvent));
 
-            var metadata = domainEvent as IMetadata;
-            metadata?.SetMetadata(Guid.NewGuid(),
-                domainEvent.GetType().Name,
-                AggregateRoot.Id.GetValue(),
-                AggregateRoot.GetType().Name);
+            if (domainEvent is IMetadata metadata)
+            {
+                metadata.SetMetadata(Guid.NewGuid(),
+                    domainEvent.GetType().Name,
+                    AggregateRoot.Id.GetValue(),
+                    AggregateRoot.GetType().Name);
+            }
 
             ApplyChange(domainEvent, true);
         }
@@ -117,12 +115,11 @@ namespace BeyondNet.Ddd.Services.Impl
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="domainEvents"/> is null.</exception>
         public void ReplayEvents(IEnumerable<IDomainEvent> domainEvents)
         {
-            if (domainEvents is null)
-                throw new ArgumentNullException(nameof(domainEvents));
+            ArgumentNullException.ThrowIfNull(domainEvents, nameof(domainEvents));
 
-            foreach (var @event in domainEvents)
+            foreach (var domainEvent in domainEvents)
             {
-                ApplyChange(@event);
+                ApplyChange(domainEvent, false);
             }
         }
     }
