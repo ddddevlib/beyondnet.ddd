@@ -153,7 +153,7 @@
 
                 if (IsCallbackInvokingEnabled)
                 {
-                    propertyData.InvokePropertyChangedCallback(this, new NotifyPropertyChangedContextArgs(oldValue, value));
+                    propertyData.InvokePropertyChangedCallback(this, new NotifyPropertyChangedContextArgs(oldValue, value!));
                 }
 
                 if (IsEventInvokingEnabled)
@@ -167,7 +167,7 @@
         /// Raises the PropertyChanged event for the specified property.
         /// </summary>
         /// <param name="propertyName">The name of the property.</param>
-        protected virtual void OnNotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnNotifyPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             ArgumentNullException.ThrowIfNull(propertyName, nameof(propertyName));
 

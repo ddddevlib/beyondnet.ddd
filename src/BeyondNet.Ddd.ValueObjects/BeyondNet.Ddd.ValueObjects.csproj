@@ -4,8 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	<AssemblyVersion>1.2.0</AssemblyVersion>
-	<VersionPrefix>1.2.0</VersionPrefix>
+	<AssemblyVersion>1.2.1</AssemblyVersion>
+	<VersionPrefix>1.2.1</VersionPrefix>
 	<Title>BeyondNet.Ddd.ValueObjects</Title>
 	<Copyright>BeyondNet</Copyright>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BeyondNet.Ddd\BeyondNet.Ddd.csproj" />
+    <PackageReference Include="BeyondNet.Ddd" Version="1.16.1" />
   </ItemGroup>
 
 </Project>

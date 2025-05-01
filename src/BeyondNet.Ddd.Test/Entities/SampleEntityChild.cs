@@ -20,7 +20,7 @@
         }
     }
 
-    public class SampleEntityChildStatus : Enumeration
+    public class SampleEntityChildStatus : DomainEnumeration
     {
         public static SampleEntityChildStatus Active = new SampleEntityChildStatus(1, nameof(Active));
         public static SampleEntityChildStatus Inactive = new SampleEntityChildStatus(2, nameof(Inactive));

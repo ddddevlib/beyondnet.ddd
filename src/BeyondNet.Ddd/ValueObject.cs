@@ -26,9 +26,9 @@ namespace BeyondNet.Ddd
         #region Properties
 
         /// <summary>
-        /// Gets or sets the value of the value object.
+        /// Gets the value of the value object.
         /// </summary>
-        protected TValue Value
+        protected TValue InternalValue
         {
             get
             {
@@ -58,7 +58,7 @@ namespace BeyondNet.Ddd
 
             TrackingState = new TrackingStateManager();
 
-            RegisterProperty(nameof(Value), typeof(TValue), value, ValuePropertyChanged);
+            RegisterProperty(nameof(InternalValue), typeof(TValue), value, ValuePropertyChanged);
 
             TrackingState.MarkAsNew();
 
@@ -83,12 +83,12 @@ namespace BeyondNet.Ddd
         {
             ArgumentNullException.ThrowIfNull(value, nameof(value));
 
-            SetValue(value, nameof(Value));
+            SetValue(value, nameof(InternalValue));
         }
 
         public TValue GetValue()
         {
-            return (TValue)GetValue(nameof(Value));
+            return (TValue)GetValue(nameof(InternalValue));
         }
 
         #endregion

@@ -6,7 +6,7 @@
         [TestMethod]
         public void GetAll_ShouldReturnAllValues()
         {
-            var values = Enumeration.GetAll<SampleEntityStatus>().ToList();
+            var values = DomainEnumeration.GetAll<SampleEntityStatus>().ToList();
             Assert.AreEqual(2, values.Count);
             Assert.AreEqual(SampleEntityStatus.Active, values[0]);
             Assert.AreEqual(SampleEntityStatus.Inactive, values[1]);
@@ -15,21 +15,21 @@
         [TestMethod]
         public void FromValue_ShouldReturnCorrectValue()
         {
-            var value = Enumeration.FromValue<SampleEntityStatus>(1);
+            var value = DomainEnumeration.FromValue<SampleEntityStatus>(1);
             Assert.AreEqual(SampleEntityStatus.Active, value);
         }
 
         [TestMethod]
         public void FromDisplayName_ShouldReturnCorrectValue()
         {
-            var value = Enumeration.FromDisplayName<SampleEntityStatus>("Active");
+            var value = DomainEnumeration.FromDisplayName<SampleEntityStatus>("Active");
             Assert.AreEqual(SampleEntityStatus.Active, value);
         }
 
         [TestMethod]
         public void AbsoluteDifference_ShouldReturnCorrectValue()
         {
-            var value = Enumeration.AbsoluteDifference(SampleEntityStatus.Active, SampleEntityStatus.Inactive);
+            var value = DomainEnumeration.AbsoluteDifference(SampleEntityStatus.Active, SampleEntityStatus.Inactive);
             Assert.AreEqual(1, value);
         }
 
@@ -87,7 +87,7 @@
         {
             try
             {
-                Enumeration.FromValue<SampleEntityStatus>(3);
+                DomainEnumeration.FromValue<SampleEntityStatus>(3);
             }
             catch (InvalidOperationException ex)
             {
@@ -100,7 +100,7 @@
         {
             try
             {
-                Enumeration.FromDisplayName<SampleEntityStatus>("Third");
+                DomainEnumeration.FromDisplayName<SampleEntityStatus>("Third");
             }
             catch (InvalidOperationException ex)
             {
