@@ -87,7 +87,7 @@
         }
     }
 
-    public class SampleAggregateRootStatus: Enumeration
+    public class SampleAggregateRootStatus: DomainEnumeration
     {
         public static SampleAggregateRootStatus Active = new SampleAggregateRootStatus(1, nameof(Active).ToLowerInvariant());
         public static SampleAggregateRootStatus Inactive = new SampleAggregateRootStatus(2, nameof(Inactive).ToLowerInvariant());

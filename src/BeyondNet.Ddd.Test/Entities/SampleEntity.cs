@@ -94,7 +94,7 @@
         }
     }
 
-    public class SampleEntityStatus : Enumeration
+    public class SampleEntityStatus : DomainEnumeration
     {
         public static SampleEntityStatus Active = new SampleEntityStatus(1, "Active");
         public static SampleEntityStatus Inactive = new SampleEntityStatus(2, "Inactive");

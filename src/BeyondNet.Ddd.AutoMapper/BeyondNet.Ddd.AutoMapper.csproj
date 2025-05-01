@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -14,8 +14,8 @@
     <PackageTags>Ddd, AutoMapper</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<AssemblyVersion>1.1.0</AssemblyVersion>
-	<VersionPrefix>1.1.0</VersionPrefix>
+	<AssemblyVersion>1.1.1</AssemblyVersion>
+	<VersionPrefix>1.1.1</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,10 +37,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BeyondNet.Ddd\BeyondNet.Ddd.csproj" />
+    <PackageReference Include="BeyondNet.Ddd" Version="1.16.1" />
   </ItemGroup>
 
 </Project>
