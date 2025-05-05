@@ -20,8 +20,8 @@
             var Id1 = IdValueObject.Create();
             var Id2 = IdValueObject.Create();
 
-            Id1.SetValue(Id1.Load(id).GetValue());
-            Id2.SetValue(Id2.Load(id).GetValue());
+            Id1.SetValue(IdValueObject.Load(id).GetValue());
+            Id2.SetValue(IdValueObject.Load(id).GetValue());
 
             Id1.Equals(Id2).ShouldBeTrue();
         }
