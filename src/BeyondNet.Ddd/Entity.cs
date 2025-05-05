@@ -29,7 +29,7 @@ namespace BeyondNet.Ddd
 
         public IdValueObject SetId(string id)
         {
-            return Id.Load(id);
+            return IdValueObject.Load(id);
         }
 
         public BrokenRulesManager BrokenRules { get;  }

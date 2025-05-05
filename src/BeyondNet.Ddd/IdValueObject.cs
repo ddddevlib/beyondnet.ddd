@@ -1,4 +1,4 @@
-﻿using BeyondNet.Ddd.Rules;
+﻿using BeyondNet.Ddd.Helpers;
 
 namespace BeyondNet.Ddd
 {
@@ -26,19 +26,9 @@ namespace BeyondNet.Ddd
         /// </summary>
         /// <param name="value">The identifier value.</param>
         /// <returns>The newly created IdValueObject.</returns>
-        public IdValueObject Load(string value)
+        public static IdValueObject Load(string value)
         {
-            Guid guid = Guid.Empty;
-
-            var isGuidValid = Guid.TryParse(value, out guid);
-
-            if (!isGuidValid)
-            {
-                BrokenRules.Add(new BrokenRule("IdValueObject", $"Value: {value} has invalid format."));
-                return new IdValueObject(guid);
-            }
-
-            return new IdValueObject(Guid.Parse(value));
+            return new IdValueObject(IdHelper.GetGuidFromString(value));
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
